@@ -2,9 +2,8 @@ import Link from "next/link";
 
 const navigation = [
   { href: "/", label: "ホーム" },
-  { href: "/about", label: "活動について" },
-  { href: "/schools", label: "参加高校" },
   { href: "/activities", label: "活動記録" },
+  { href: "/contact", label: "お問い合わせ" },
 ];
 
 export function SiteHeader() {

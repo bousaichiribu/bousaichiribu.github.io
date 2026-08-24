@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { year, section } = await params;
   const activity = getActivity(year);
   return activity && isSubsection(section)
-    ? { title: `${labels[section]}｜${activity.year}年度`, description: activity.summary }
+    ? { title: `${labels[section]}｜${activity.year}年度`, description: `防災地理部の${activity.year}年度資料です。` }
     : { title: "活動記録" };
 }
 
@@ -52,8 +52,7 @@ export default async function ActivitySubsectionPage({ params }: Props) {
       <SiteHeader />
       <main className="main-content" id="main-content">
         <article className="prose activity-detail">
-          <p className="meta">{activity.year}年度</p>
-          <h1>{labels[section]}</h1>
+          <h1>{activity.year}年度　{labels[section]}</h1>
           <ActivitySectionNav activity={activity} current={section} />
           <ActivityArchive html={archiveHtml} />
           <p><Link className="text-link" href={`/activities/${activity.year}`}>{activity.year}年度の活動へ戻る →</Link></p>

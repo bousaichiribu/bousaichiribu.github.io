@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const activity = getActivity(year);
 
   return activity
-    ? { title: activity.title, description: activity.summary }
+    ? { title: `${activity.year}年度の活動記録`, description: `防災地理部の${activity.year}年度の活動記録です。` }
     : { title: "活動記録" };
 }
 
@@ -34,13 +34,7 @@ export default async function ActivityPage({ params }: Props) {
       <SiteHeader />
       <main className="main-content" id="main-content">
         <article className="prose activity-detail">
-          <p className="meta">{activity.year}年度</p>
-          <h1>{activity.title}</h1>
-          <p className="page-lead">{activity.summary}</p>
-
-          <figure className="activity-cover">
-            <img src={activity.cover} alt={`${activity.year}年度の活動地域の風景`} />
-          </figure>
+          <h1>{activity.year}年度の活動記録</h1>
 
           <p className="activity-schools"><strong>参加校</strong><br />{activity.schools.join("、")}</p>
 

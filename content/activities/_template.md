@@ -1,10 +1,6 @@
 ---
 year: 20XX
-title: 防災地理部 20XX年度
-summary: 一覧とトップページに表示する短い説明を書きます。
 schools: 高校A｜高校B｜高校C
-cover: /images/home/coast-cliffs.jpg
-originalUrl:
 source:
 classSource:
 tourSource:

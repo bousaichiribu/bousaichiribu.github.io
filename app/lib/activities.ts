@@ -1,10 +1,6 @@
 export type Activity = {
   year: string;
-  title: string;
-  summary: string;
   schools: string[];
-  cover: string;
-  originalUrl?: string;
   source?: string;
   classSource?: string;
   tourSource?: string;
@@ -49,14 +45,10 @@ function parseActivity(source: string): Activity | null {
 
   return {
     year: metadata.year,
-    title: metadata.title || `防災地理部 ${metadata.year}年度`,
-    summary: metadata.summary || "",
     schools: (metadata.schools || "")
       .split("｜")
       .map((school) => school.trim())
       .filter(Boolean),
-    cover: metadata.cover || "/images/home/coast-cliffs.jpg",
-    originalUrl: metadata.originalUrl || undefined,
     source: metadata.source || undefined,
     classSource: metadata.classSource || undefined,
     tourSource: metadata.tourSource || undefined,
@@ -112,6 +104,7 @@ function prepareArchiveHtml(source: string, activity: Activity): string {
     .replace(/<script\b[\s\S]*?<\/script>/gi, "")
     .replace(/<!--[\s\S]*?-->/g, "")
     .replace(/<ul(?:\s+class=["']head["'])?>[\s\S]*?研究室TOP[\s\S]*?<\/ul>/i, "")
+    .replace(/<h2\b[^>]*>\s*(?:防災地理部の活動理念|防災地理部の設立にあたって)\s*<\/h2>[\s\S]*?(?=<h2\b)/i, "")
     .replace(/<h2\b[^>]*id=["']inquiry["'][^>]*>[\s\S]*$/i, "")
     .replace(/<input\b[^>]*>/gi, '<span class="restricted-note">限定公開資料</span>')
     .replace(/\son\w+=["'][^"']*["']/gi, "")

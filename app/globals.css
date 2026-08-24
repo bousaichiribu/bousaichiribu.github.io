@@ -81,8 +81,8 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .site-nav a:focus-visible,
 .text-link:hover,
 .text-link:focus-visible,
-.archive-list h2 a:hover,
-.archive-list h2 a:focus-visible { color: #666; }
+.archive-list a:hover,
+.archive-list a:focus-visible { color: #666; }
 
 .main-content {
   width: min(800px, calc(100% - 64px));
@@ -114,6 +114,7 @@ p { margin: 0 0 1.25em; }
   line-height: 2;
 }
 
+.intro-heading { margin: -10px 0 28px; font-size: 25px; }
 .bio-text p { margin-bottom: 1.25em; }
 .signature { color: #444; text-align: right; }
 
@@ -146,35 +147,19 @@ p { margin: 0 0 1.25em; }
 }
 
 .home-section h2 { margin-top: 44px; }
-.home-section h3 { margin-top: 0; font-size: 20px; }
 .text-link { text-decoration: underline; }
-.meta { margin-bottom: 6px; color: var(--muted); font-size: 13px; }
-.page-lead { margin: -16px 0 54px; font-size: 17px; line-height: 2; }
 
 .prose { max-width: 720px; }
 .prose h1 { margin-bottom: 52px; }
 .prose h2 { padding-top: 16px; border-top: 1px solid var(--line); }
-.prose ul, .plain-steps { padding-left: 1.45em; }
-.prose li, .plain-steps li { margin-bottom: .8em; padding-left: .3em; }
-.plain-steps { margin-bottom: 54px; }
-
-.school-list { margin: 0; border-top: 1px solid var(--line); }
-.school-list div { display: grid; grid-template-columns: 1fr 1fr; padding: 16px 0; border-bottom: 1px solid var(--line); }
-.school-list dt { font-family: "Hiragino Mincho ProN", "Yu Mincho", serif; font-size: 17px; font-weight: 600; }
-.school-list dd { margin: 0; color: var(--muted); }
-.note { margin-top: 28px; color: var(--muted); font-size: 13px; }
+.prose ul { padding-left: 1.45em; }
+.prose li { margin-bottom: .8em; padding-left: .3em; }
 
 .archive-list { border-top: 1px solid var(--line); }
-.archive-list article { display: grid; grid-template-columns: 82px 1fr; gap: 24px; padding: 30px 0; border-bottom: 1px solid var(--line); }
-.archive-list h2 { margin: 0 0 8px; font-size: 21px; }
-.archive-list h2 a { text-decoration: none; }
-.archive-year { margin: 3px 0 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; }
-.archive-schools { margin-bottom: 0; color: var(--muted); font-size: 13px; }
+.archive-list article { padding: 22px 0; border-bottom: 1px solid var(--line); }
+.archive-list a { font-family: "Hiragino Mincho ProN", "Yu Mincho", serif; font-size: 20px; font-weight: 600; text-decoration: none; }
 
-.activity-detail .page-lead { margin-top: -25px; }
-.activity-cover { height: 380px; margin: 48px 0; }
 .activity-schools { padding: 20px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.source-link { margin-top: 52px; }
 
 .activity-tabs {
   display: flex;
@@ -205,19 +190,17 @@ p { margin: 0 0 1.25em; }
 .archive-source ol.indx { margin: 14px 0 38px; }
 .archive-source .restricted-note { display: inline-block; padding: 2px 8px; border: 1px solid var(--line); color: var(--muted); font-size: 12px; }
 
-.contact-panel {
-  width: min(800px, calc(100% - 64px));
-  margin: 100px auto 0;
+.contact-box {
   padding: 30px 34px;
   border: 1px solid var(--line);
 }
 
-.contact-panel h2 { margin: 0 0 14px; font-size: 23px; }
-.contact-panel h3 { margin: 28px 0 8px; font-size: 17px; }
-.contact-panel p { margin-bottom: 10px; }
-.contact-panel .contact-person { font-weight: 600; }
-.contact-panel ul { margin: 0; padding-left: 1.3em; }
-.contact-panel li { margin-bottom: 3px; }
+.contact-box p { margin-bottom: 10px; }
+.contact-box .contact-person { margin-top: 24px; font-weight: 600; }
+.related-links { margin-top: 58px; }
+.related-links h2 { padding-top: 20px; border-top: 1px solid var(--line); }
+.related-links ul { padding-left: 1.3em; }
+.related-links li { margin-bottom: 6px; }
 
 .site-footer {
   width: min(800px, calc(100% - 64px));
@@ -240,16 +223,13 @@ p { margin: 0 0 1.25em; }
   .site-nav a { font-size: 12px; }
   .main-content { width: calc(100% - 40px); margin-top: 60px; }
   h1 { margin-bottom: 34px; }
-  .bio-text, .page-lead { font-size: 16px; }
+  .bio-text { font-size: 16px; }
   .photo-strip { grid-template-columns: 1fr; height: auto; }
   .photo-large { height: 280px; }
   .photo-small-column { grid-template-columns: 1fr 1fr; grid-template-rows: none; }
   .photo-small-column figure { height: 145px; }
-  .school-list div { grid-template-columns: 1fr; gap: 2px; }
-  .archive-list article { grid-template-columns: 58px 1fr; gap: 16px; }
-  .activity-cover { height: 270px; }
   .archive-source iframe { min-height: 220px; }
-  .contact-panel { width: calc(100% - 40px); margin-top: 70px; padding: 24px 20px; }
+  .contact-box { padding: 24px 20px; }
   .site-footer { width: calc(100% - 40px); }
 }
 
