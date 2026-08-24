@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 :root {
   --ink: #171717;
   --muted: #666;
@@ -178,9 +176,52 @@ p { margin: 0 0 1.25em; }
 .activity-schools { padding: 20px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .source-link { margin-top: 52px; }
 
+.activity-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 42px 0 54px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.activity-tabs a {
+  padding: 11px 20px 10px 0;
+  color: var(--muted);
+}
+
+.activity-tabs a[aria-current="page"] { color: var(--ink); font-weight: 700; }
+
+.archive-source { margin-bottom: 58px; }
+.archive-source h1 { margin: 52px 0 28px; font-size: 30px; }
+.archive-source h2 { margin-top: 52px; }
+.archive-source h3 { margin-top: 34px; }
+.archive-source a { text-decoration: underline; }
+.archive-source img { width: auto; max-width: 100%; height: auto; margin: 22px auto; object-fit: contain; }
+.archive-source iframe { display: block; width: 100%; max-width: 100%; min-height: 360px; margin: 26px 0; border: 0; }
+.archive-source table { display: block; width: 100%; margin: 22px 0 38px; border-collapse: collapse; overflow-x: auto; }
+.archive-source th, .archive-source td { min-width: 120px; padding: 10px 12px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+.archive-source th { min-width: 92px; background: #fafafa; }
+.archive-source ol.indx { margin: 14px 0 38px; }
+.archive-source .restricted-note { display: inline-block; padding: 2px 8px; border: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+
+.contact-panel {
+  width: min(800px, calc(100% - 64px));
+  margin: 100px auto 0;
+  padding: 30px 34px;
+  border: 1px solid var(--line);
+}
+
+.contact-panel h2 { margin: 0 0 14px; font-size: 23px; }
+.contact-panel h3 { margin: 28px 0 8px; font-size: 17px; }
+.contact-panel p { margin-bottom: 10px; }
+.contact-panel .contact-person { font-weight: 600; }
+.contact-panel ul { margin: 0; padding-left: 1.3em; }
+.contact-panel li { margin-bottom: 3px; }
+
 .site-footer {
   width: min(800px, calc(100% - 64px));
-  margin: 120px auto 0;
+  margin: 34px auto 0;
   padding: 28px 0 42px;
   border-top: 1px solid var(--line);
   color: var(--muted);
@@ -207,7 +248,9 @@ p { margin: 0 0 1.25em; }
   .school-list div { grid-template-columns: 1fr; gap: 2px; }
   .archive-list article { grid-template-columns: 58px 1fr; gap: 16px; }
   .activity-cover { height: 270px; }
-  .site-footer { width: calc(100% - 40px); margin-top: 80px; }
+  .archive-source iframe { min-height: 220px; }
+  .contact-panel { width: calc(100% - 40px); margin-top: 70px; padding: 24px 20px; }
+  .site-footer { width: calc(100% - 40px); }
 }
 
 @media (prefers-reduced-motion: reduce) {

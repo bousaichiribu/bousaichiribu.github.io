@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ActivityArchive, ActivitySectionNav } from "../../components/ActivityArchive";
 import { SiteFooter } from "../../components/SiteFooter";
 import { SiteHeader } from "../../components/SiteHeader";
-import { getActivities, getActivity, parseMarkdown } from "../../lib/activities";
+import { getActivities, getActivity, getActivityArchiveHtml, parseMarkdown } from "../../lib/activities";
 
 type Props = { params: Promise<{ year: string }> };
 
@@ -25,7 +26,8 @@ export default async function ActivityPage({ params }: Props) {
   const activity = getActivity(year);
   if (!activity) notFound();
 
-  const blocks = parseMarkdown(activity.body);
+  const archiveHtml = getActivityArchiveHtml(activity, "index");
+  const blocks = archiveHtml ? [] : parseMarkdown(activity.body);
 
   return (
     <>
@@ -42,6 +44,10 @@ export default async function ActivityPage({ params }: Props) {
 
           <p className="activity-schools"><strong>参加校</strong><br />{activity.schools.join("、")}</p>
 
+          {archiveHtml && <ActivitySectionNav activity={activity} current="index" />}
+
+          {archiveHtml && <ActivityArchive html={archiveHtml} />}
+
           {blocks.map((block, index) => {
             if (block.type === "heading") {
               return block.level === 2
@@ -53,10 +59,6 @@ export default async function ActivityPage({ params }: Props) {
             }
             return <p key={`paragraph-${index}`}>{block.text}</p>;
           })}
-
-          {activity.originalUrl && (
-            <p className="source-link"><a href={activity.originalUrl} target="_blank" rel="noreferrer">旧サイトの記録を見る ↗</a></p>
-          )}
           <p><Link className="text-link" href="/activities">年度ごとの活動記録へ戻る →</Link></p>
         </article>
       </main>

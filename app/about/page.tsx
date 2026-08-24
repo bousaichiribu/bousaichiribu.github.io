@@ -35,11 +35,6 @@ export default function AboutPage() {
             <li><strong>地域へ伝える</strong><br />復興デザイン会議や地域の発表会で成果を共有します。</li>
           </ol>
 
-          <h2>お問い合わせ</h2>
-          <p>
-            活動への参加・見学、その他のお問い合わせは、担当の松永隆宏までご連絡ください。<br />
-            matsunaga [at] bin.t.u-tokyo.ac.jp
-          </p>
         </article>
       </main>
       <SiteFooter />

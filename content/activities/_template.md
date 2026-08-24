@@ -5,6 +5,9 @@ summary: 一覧とトップページに表示する短い説明を書きます�
 schools: 高校A｜高校B｜高校C
 cover: /images/home/coast-cliffs.jpg
 originalUrl:
+source:
+classSource:
+tourSource:
 ---
 ## 活動概要
 

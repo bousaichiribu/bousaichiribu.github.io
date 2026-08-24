@@ -30,12 +30,43 @@ test("server-renders the simple 防災地理部 homepage", async () => {
 });
 
 test("serves pages generated from yearly Markdown files", async () => {
-  const routes = ["/about", "/schools", "/activities", "/activities/2025", "/activities/2020"];
+  const routes = [
+    "/about",
+    "/schools",
+    "/activities",
+    "/activities/2025",
+    "/activities/2025/class",
+    "/activities/2025/tour",
+    "/activities/2020",
+    "/activities/2020/class",
+  ];
   for (const route of routes) {
     const response = await render(route);
     assert.equal(response.status, 200, route);
     assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   }
+});
+
+test("preserves complete index, class, and tour source content", async () => {
+  const activity2020 = await (await render("/activities/2020")).text();
+  assert.match(activity2020, /各校の提案プラン/);
+  assert.match(activity2020, /実践への接続/);
+
+  const class2024 = await (await render("/activities/2024/class")).text();
+  assert.match(class2024, /0\. はじめに/);
+  assert.match(class2024, /7\. プランを実践してみる/);
+
+  const tour2025 = await (await render("/activities/2025/tour")).text();
+  assert.match(tour2025, /大川小学校/);
+  assert.match(tour2025, /花露辺/);
+});
+
+test("shows contact and related links outside the footer", async () => {
+  const html = await (await render("/")).text();
+  assert.match(html, /お問い合わせ/);
+  assert.match(html, /matsunaga \[at\] bin\.t\.u-tokyo\.ac\.jp/);
+  assert.match(html, /https:\/\/dss\.bin\.t\.u-tokyo\.ac\.jp\/alliance\//);
+  assert.match(html, /https:\/\/www\.bin\.t\.u-tokyo\.ac\.jp\//);
 });
 
 test("keeps yearly activities in editable Markdown", async () => {
