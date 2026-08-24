@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SiteFooter } from "./components/SiteFooter";
 import { SiteHeader } from "./components/SiteHeader";
+import { getActivities } from "./lib/activities";
 
 const schools = [
   "宇和島東高校",
@@ -12,98 +13,72 @@ const schools = [
   "八幡浜高校",
 ];
 
-const learningSteps = [
-  { number: "01", title: "歩く", text: "自分たちのまちを歩き、地形や暮らし、災害の痕跡を見つけます。" },
-  { number: "02", title: "聞く", text: "家族や地域の方の経験に耳を傾け、地域の記憶を集めます。" },
-  { number: "03", title: "重ねる", text: "地図や歴史資料、調査結果を重ね、地域が抱える課題を読み解きます。" },
-  { number: "04", title: "描く", text: "守りたい暮らしを考え、災害への備えと事前復興の姿を提案します。" },
-];
-
 export default function Home() {
+  const latest = getActivities()[0];
+
   return (
     <>
       <SiteHeader />
-      <main id="main-content">
-        <section className="hero shell" aria-labelledby="hero-title">
-          <div className="hero-copy">
-            <p className="eyebrow">高校生と専門家で地域の未来を描く</p>
-            <h1 id="hero-title">地域を知ることから、<br />災害への備えは始まる。</h1>
-            <p className="hero-lead">
-              まちを歩き、声を聞き、地図を囲む。中高生が地域の未来と
-              事前復興を考える、年間を通した学びの場です。
+      <main className="main-content" id="main-content">
+        <section className="intro" aria-labelledby="page-title">
+          <h1 id="page-title">防災地理部</h1>
+          <div className="bio-text">
+            <p>
+              地理学者ブローデルの『地中海』は、「まず初めに山地」という意外な文章で始まります。
+              都市は、その土地の歴史や地理を背景に、人々の暮らしを支える経済、そして文化の豊かさによって形づくられています。
+              私たちは、自分たちが暮らす地域のことをどれだけ知っているといえるでしょうか。
             </p>
-            <div className="button-row">
-              <Link className="button button-primary" href="/activities">活動を見る</Link>
-              <Link className="button button-secondary" href="/schools">参加高校を見る</Link>
-            </div>
+            <p>
+              災害は忘れた頃にやってきます。被災してから地域の課題に向き合うのではなく、
+              「地域のよりよい理解」を下敷きにした「災害復興への備え」を考えることが、いま求められています。
+            </p>
+            <p>
+              防災地理部では、地域で生きる私たち自身が、さまざまな世代の人々とともに地域を歩き、語りあい、問題を発見します。
+              そして地図を囲んで線を引き、地域の復興と災害への備えを描くことに取り組みます。
+            </p>
           </div>
-          <div className="hero-images" aria-label="沿岸地域でのフィールドワークを支える風景">
-            <figure className="hero-image-main">
-              <img src="/images/home/coast-cliffs.jpg" alt="岩手県沿岸の断崖と海" />
-            </figure>
-            <figure className="hero-image-sub">
-              <img src="/images/home/coast-dawn.jpg" alt="海を望む林と静かな空" />
-            </figure>
-          </div>
-        </section>
+          <p className="signature">防災地理部代表　羽藤英二（東京大学教授）</p>
 
-        <section className="section shell" aria-labelledby="learning-title">
-          <div className="section-heading">
-            <p className="eyebrow">Our approach</p>
-            <h2 id="learning-title">地域を読み、未来を考える</h2>
-            <p>現場での気づきを出発点に、調査と対話を重ねて提案へつなげます。</p>
+          <div className="top-links" aria-label="主要ページ">
+            <Link href="/about">活動の理念と進め方</Link>
+            <Link href="/schools">参加高校の紹介</Link>
+            <Link href="/activities">年度ごとの活動記録</Link>
           </div>
-          <ol className="learning-grid">
-            {learningSteps.map((step) => (
-              <li key={step.number}>
-                <span>{step.number}</span>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </li>
-            ))}
-          </ol>
-        </section>
 
-        <section className="section section-tint">
-          <div className="shell feature-grid">
-            <figure className="feature-image">
-              <img src="/images/home/fishing-harbor.jpg" alt="山々に囲まれた沿岸の漁港" />
+          <div className="photo-strip" aria-label="活動地域の風景">
+            <figure className="photo-large">
+              <img src="/images/home/coast-cliffs.jpg" alt="海岸沿いの断崖と海" />
             </figure>
-            <div className="feature-copy">
-              <p className="eyebrow">2025 activity</p>
-              <h2>東北復興視察</h2>
-              <p className="feature-meta">2025年8月1日—3日</p>
-              <p>
-                閖上、大川小学校、気仙沼、陸前高田、田老、釜石を訪ねました。
-                被災の記憶と復興の現場に立ち、避難の判断、地域の対話、
-                まちの再生について学びました。
-              </p>
-              <Link className="text-link" href="/activities/2025">2025年度の記録を読む <span aria-hidden="true">→</span></Link>
+            <div className="photo-small-column">
+              <figure><img src="/images/home/coast-dawn.jpg" alt="海を望む林と空" /></figure>
+              <figure><img src="/images/home/fishing-harbor.jpg" alt="山に囲まれた漁港" /></figure>
             </div>
           </div>
         </section>
 
-        <section className="section shell schools-preview" aria-labelledby="schools-title">
-          <div className="section-heading compact">
-            <p className="eyebrow">Schools</p>
-            <h2 id="schools-title">参加高校</h2>
-            <p>2025年度は、愛媛県と静岡県の高校を中心に活動しています。</p>
-          </div>
-          <ul className="school-name-list">
-            {schools.map((school) => <li key={school}>{school}</li>)}
-          </ul>
-          <Link className="text-link" href="/schools">参加高校の紹介を見る <span aria-hidden="true">→</span></Link>
-        </section>
-
-        <section className="section shell mission-panel" aria-labelledby="mission-title">
-          <p className="eyebrow">Why geography?</p>
-          <h2 id="mission-title">自ら地域を歩き、語りあい、問題を発見する。</h2>
+        <section className="home-section" aria-labelledby="activity-outline">
+          <h2 id="activity-outline">活動概要</h2>
           <p>
-            地域のよりよい理解を下敷きに、災害復興への備えを考える。
-            防災地理部は、「地理」と「防災」を現場で同時に考えながら、
-            地域で生きる術を学んでいく活動の場です。
+            中高生が大学生や専門家とともに、まちあるき、聞き取り、地図や資料の分析、被災地の視察を行います。
+            その成果をもとに災害シナリオと事前復興計画を考え、地域や復興デザイン会議で発表します。
           </p>
-          <Link className="text-link" href="/about">防災地理部について <span aria-hidden="true">→</span></Link>
+          <p><Link className="text-link" href="/about">詳しく見る →</Link></p>
+        </section>
+
+        {latest && (
+          <section className="home-section" aria-labelledby="latest-activity">
+            <h2 id="latest-activity">最新の活動</h2>
+            <p className="meta">{latest.year}年度</p>
+            <h3>{latest.title}</h3>
+            <p>{latest.summary}</p>
+            <p><Link className="text-link" href={`/activities/${latest.year}`}>活動記録を読む →</Link></p>
+          </section>
+        )}
+
+        <section className="home-section" aria-labelledby="participating-schools">
+          <h2 id="participating-schools">参加高校</h2>
+          <p>{schools.join("、")}</p>
+          <p><Link className="text-link" href="/schools">参加高校の紹介を見る →</Link></p>
         </section>
       </main>
       <SiteFooter />

@@ -4,7 +4,7 @@ import { SiteHeader } from "../components/SiteHeader";
 
 export const metadata: Metadata = {
   title: "参加高校",
-  description: "2025年度の防災地理部に参加する高校を紹介します。",
+  description: "防災地理部に参加している高校を紹介します。",
 };
 
 const schools = [
@@ -21,24 +21,23 @@ export default function SchoolsPage() {
   return (
     <>
       <SiteHeader />
-      <main id="main-content">
-        <header className="page-hero shell">
-          <p className="eyebrow">Schools</p>
-          <h1>参加高校</h1>
-          <p className="lead">それぞれの地域で暮らす高校生が、地元の地理と災害を見つめ、互いの学びを持ち寄ります。</p>
-        </header>
-        <section className="content-section shell" aria-label="2025年度参加高校一覧">
-          <div className="schools-grid">
-            {schools.map((school) => (
-              <article className="school-card" key={school.name}>
-                <p className="region">{school.region}</p>
-                <h2>{school.name}</h2>
-                <p>地域調査や視察、事前復興プランの検討を通して活動します。</p>
-              </article>
-            ))}
-          </div>
-          <p className="notice">掲載校は2025年度の中心的な参加校です。活動回によって参加校が異なる場合があります。</p>
-        </section>
+      <main className="main-content" id="main-content">
+        <h1>参加高校</h1>
+        <p className="page-lead">
+          2025年度は、愛媛県と静岡県の高校を中心に活動しています。
+          各校が自分たちの地域を調べ、互いの学びを持ち寄ります。
+        </p>
+
+        <dl className="school-list">
+          {schools.map((school) => (
+            <div key={school.name}>
+              <dt>{school.name}</dt>
+              <dd>{school.region}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <p className="note">年度や活動回によって、参加校が異なる場合があります。過年度の参加校は各年度の活動記録に掲載しています。</p>
       </main>
       <SiteFooter />
     </>
