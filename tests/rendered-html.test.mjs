@@ -27,7 +27,17 @@ test("server-renders the simple 防災地理部 homepage", async () => {
   assert.match(html, /地域のよりよい理解/);
   assert.match(html, /こうした学びを独習で進めることは簡単ではありません/);
   assert.match(html, /災害からの地域復興は/);
+  assert.match(html, /前の写真/);
+  assert.match(html, /次の写真/);
+  assert.match(html, /1 \/ 4/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
+});
+
+test("shows yearly activity links in the header menu", async () => {
+  const html = await (await render()).text();
+  assert.match(html, /年度別の活動記録/);
+  assert.match(html, /2025年度/);
+  assert.match(html, /2020年度/);
 });
 
 test("serves pages generated from yearly Markdown files", async () => {
@@ -85,16 +95,18 @@ test("shows contact and related links on the contact page", async () => {
 });
 
 test("keeps yearly activities in editable Markdown", async () => {
-  const [page, activity2025, template, packageJson] = await Promise.all([
+  const [page, activity2025, template, packageJson, gitignore] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../content/activities/2025.md", import.meta.url), "utf8"),
     readFile(new URL("../content/activities/_template.md", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
+    readFile(new URL("../.gitignore", import.meta.url), "utf8"),
   ]);
 
   assert.match(activity2025, /^---\nyear: 2025/m);
   assert.match(template, /year: 20XX/);
   assert.doesNotMatch(page, /SkeletonPreview|codex-preview/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
+  assert.match(gitignore, /^\/node_modules$/m);
   await assert.rejects(access(new URL("app/_sites-preview", projectRoot)));
 });

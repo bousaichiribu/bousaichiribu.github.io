@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HomeCarousel } from "./components/HomeCarousel";
 import { SiteFooter } from "./components/SiteFooter";
 import { SiteHeader } from "./components/SiteHeader";
 import { getActivities } from "./lib/activities";
@@ -9,6 +10,7 @@ export default function Home() {
   return (
     <>
       <SiteHeader />
+      <HomeCarousel />
       <main className="main-content" id="main-content">
         <section className="intro" aria-labelledby="page-title">
           <h1 id="page-title">防災地理部</h1>
@@ -37,15 +39,6 @@ export default function Home() {
             <Link href="/contact">お問い合わせ</Link>
           </div>
 
-          <div className="photo-strip" aria-label="活動地域の風景">
-            <figure className="photo-large">
-              <img src="/images/home/coast-cliffs.jpg" alt="海岸沿いの断崖と海" />
-            </figure>
-            <div className="photo-small-column">
-              <figure><img src="/images/home/coast-dawn.jpg" alt="海を望む林と空" /></figure>
-              <figure><img src="/images/home/fishing-harbor.jpg" alt="山に囲まれた漁港" /></figure>
-            </div>
-          </div>
         </section>
 
         <section className="home-section" aria-labelledby="activity-outline">
