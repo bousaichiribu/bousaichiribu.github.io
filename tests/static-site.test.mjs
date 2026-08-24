@@ -6,9 +6,9 @@ const root = new URL("../", import.meta.url);
 
 test("home keeps the full philosophy and carousel", async () => {
   const home = await readFile(new URL("../index.html", import.meta.url), "utf8");
-  assert.match(home, /防災地理部の活動理念/);
+  assert.match(home, /class="intro-heading">活動理念/);
   assert.match(home, /地理学者ブローデル/);
-  assert.match(home, /羽藤英二/);
+  assert.match(home, /羽藤英二 \(東京大学大学院教授\)/);
   assert.match(home, /data-carousel-previous/);
   assert.match(home, /data-carousel-next/);
 });
