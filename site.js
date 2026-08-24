@@ -316,6 +316,11 @@ async function renderActivityDetail() {
       : `<a class="text-link" href="/activity.html?year=${year}">${year}年度の活動へ戻る →</a>`;
 
     mount.innerHTML = `${heading}${schools}${sectionLinks(activity, section)}${content}<p>${backLink}</p>`;
+
+    if (window.location.hash) {
+      const target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+      if (target) requestAnimationFrame(() => target.scrollIntoView());
+    }
   } catch {
     mount.innerHTML = `<h1>${escapeHtml(year)}年度の活動記録</h1><p class="load-error">活動記録を読み込めませんでした。</p>`;
   }

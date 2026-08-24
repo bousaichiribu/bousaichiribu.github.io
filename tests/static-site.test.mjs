@@ -22,6 +22,19 @@ test("plain JavaScript provides the year menu and four photos", async () => {
   assert.doesNotMatch(script, /React|Next\.js|node_modules/);
 });
 
+test("archive headings have visible hierarchy and hash navigation", async () => {
+  const [style, script] = await Promise.all([
+    readFile(new URL("../style.css", import.meta.url), "utf8"),
+    readFile(new URL("../site.js", import.meta.url), "utf8"),
+  ]);
+  assert.match(style, /\.archive-source h2 \{/);
+  assert.match(style, /border-left: 4px solid #444/);
+  assert.match(style, /\.archive-source h3 \{/);
+  assert.match(style, /border-bottom: 1px solid #ccc/);
+  assert.match(style, /scroll-margin-top/);
+  assert.match(script, /scrollIntoView/);
+});
+
 test("contact and related links are present", async () => {
   const contact = await readFile(new URL("../contact.html", import.meta.url), "utf8");
   assert.match(contact, /matsunaga \[at\] bin\.t\.u-tokyo\.ac\.jp/);
