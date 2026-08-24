@@ -1,38 +1,39 @@
 # 防災地理部ウェブサイト
 
-防災地理部の公式サイトです。ページは Next.js / vinext で構成しています。
+HTML、CSS、JavaScriptだけで表示する静的サイトです。React、Next.js、データベースは使っていません。
 
-## 年度の活動記録を追加する
+## 主なファイル
 
-活動記録は `content/activities` 内のMarkdownファイルから自動生成されます。
+- `index.html` — ホーム
+- `activities.html` — 年度別活動記録の一覧
+- `activity.html` — 各年度の活動記録
+- `contact.html` — お問い合わせ
+- `style.css` — 全ページ共通の見た目
+- `site.js` — 写真切替、年度メニュー、活動記録の読み込み
+- `content/activities/` — 年度ごとのMarkdown
+- `content/archive/` — 以前のサイトから移した完全な活動記録
+- `images/` — 写真
 
-1. `_template.md` をコピーし、`2026.md` のように年度をファイル名にします。
-2. 冒頭の `year` と `schools` を書き換えます。
-3. `---` より下に本文を書きます。見出しは `##` または `###`、箇条書きは `-` が使えます。
+## 年度を追加する
 
-追加した年度は、トップページの「最新の活動」、活動記録一覧、年度別の詳細ページへ自動で反映されます。
+1. `content/activities/_template.md`をコピーして、例えば`2026.md`を作ります。
+2. `year`、`schools`、本文を編集します。
+3. 以前のHTML資料がある場合だけ`content/archive/`へ入れ、Markdownの`source`、`classSource`、`tourSource`にファイル名を書きます。
 
-本文中で画像を使う場合は `public/images` に保存します。
-
-## 過年度資料の保存方法
-
-2020〜2025年度は、旧サイトの年度トップ、活動の進め方、東北復興視察のHTML原資料を `content/archive` に保存しています。Markdown冒頭の次の項目が各原資料を指定します。
-
-- `source`: 年度トップ
-- `classSource`: 活動の進め方
-- `tourSource`: 東北復興視察（ある年度のみ）
-
-原資料は省略せず表示され、相対リンクや画像は旧サイトの公開URLへ自動変換されます。新年度をMarkdownだけで作る場合は、この3項目を空欄にしたまま本文を編集できます。
+年度一覧と上部メニューはMarkdownを自動的に探して表示します。活動記録のURLは`activity.html?year=2026`です。
 
 ## ローカルで確認する
 
-```bash
-npm install
+```sh
 npm run dev
 ```
 
-## ビルドとテスト
+ブラウザで`http://localhost:3000/`を開きます。ファイルを直接開くのではなく、ローカルサーバー経由で確認してください。
 
-```bash
-npm test
+## 公開用ファイルを作る
+
+```sh
+npm run build
 ```
+
+外部パッケージのインストールは不要です。

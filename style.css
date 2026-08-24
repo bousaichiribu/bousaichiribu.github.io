@@ -72,12 +72,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 }
 
 .site-nav > ul > li { position: relative; }
-
-.nav-activity-label {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
+.nav-activity-label { display: flex; align-items: center; gap: 2px; }
 
 .activity-menu-toggle {
   padding: 3px 1px 3px 4px;
@@ -127,12 +122,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   transform: translateY(0);
 }
 
-.site-nav a {
-  color: #333;
-  font-size: 13px;
-  text-decoration: none;
-}
-
+.site-nav a { color: #333; font-size: 13px; text-decoration: none; }
 .site-nav a:hover,
 .site-nav a:focus-visible,
 .text-link:hover,
@@ -148,8 +138,6 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   overflow: hidden;
   background: #eee;
 }
-
-.home-carousel img { object-position: center; }
 
 .carousel-button {
   position: absolute;
@@ -190,51 +178,26 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   margin: 92px auto 0;
 }
 
-h1,
-h2,
-h3 {
+h1, h2, h3 {
   font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
   font-weight: 600;
   line-height: 1.5;
 }
 
-h1 {
-  margin: 0 0 42px;
-  font-size: clamp(36px, 7vw, 50px);
-  letter-spacing: .04em;
-}
-
+h1 { margin: 0 0 42px; font-size: clamp(36px, 7vw, 50px); letter-spacing: .04em; }
 h2 { margin: 52px 0 16px; font-size: 25px; }
 h3 { margin: 30px 0 10px; font-size: 19px; }
 p { margin: 0 0 1.25em; }
 
-.bio-text {
-  margin: 0 0 25px;
-  font-size: 17px;
-  line-height: 2;
-}
-
+.bio-text { margin: 0 0 25px; font-size: 17px; line-height: 2; }
 .intro-heading { margin: -10px 0 28px; font-size: 25px; }
 .bio-text p { margin-bottom: 1.25em; }
 .signature { color: #444; text-align: right; }
 
-.top-links {
-  display: grid;
-  margin: 42px 0;
-  border-top: 1px solid var(--line);
-}
+.top-links { display: grid; margin: 42px 0; border-top: 1px solid var(--line); }
+.top-links a { padding: 12px 0; border-bottom: 1px solid var(--line); }
 
-.top-links a {
-  padding: 12px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.home-section {
-  margin: 0;
-  padding: 0 0 52px;
-  border-top: 1px solid var(--line);
-}
-
+.home-section { margin: 0; padding: 0 0 52px; border-top: 1px solid var(--line); }
 .home-section h2 { margin-top: 44px; }
 .text-link { text-decoration: underline; }
 
@@ -249,21 +212,8 @@ p { margin: 0 0 1.25em; }
 .archive-list a { font-family: "Hiragino Mincho ProN", "Yu Mincho", serif; font-size: 20px; font-weight: 600; text-decoration: none; }
 
 .activity-schools { padding: 20px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-
-.activity-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0;
-  margin: 42px 0 54px;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-
-.activity-tabs a {
-  padding: 11px 20px 10px 0;
-  color: var(--muted);
-}
-
+.activity-tabs { display: flex; flex-wrap: wrap; gap: 0; margin: 42px 0 54px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.activity-tabs a { padding: 11px 20px 10px 0; color: var(--muted); }
 .activity-tabs a[aria-current="page"] { color: var(--ink); font-weight: 700; }
 
 .archive-source { margin-bottom: 58px; }
@@ -279,29 +229,17 @@ p { margin: 0 0 1.25em; }
 .archive-source ol.indx { margin: 14px 0 38px; }
 .archive-source .restricted-note { display: inline-block; padding: 2px 8px; border: 1px solid var(--line); color: var(--muted); font-size: 12px; }
 
-.contact-box {
-  padding: 30px 34px;
-  border: 1px solid var(--line);
-}
-
+.contact-box { padding: 30px 34px; border: 1px solid var(--line); }
 .contact-box p { margin-bottom: 10px; }
 .contact-box .contact-person { margin-top: 24px; font-weight: 600; }
 .related-links { margin-top: 58px; }
 .related-links h2 { padding-top: 20px; border-top: 1px solid var(--line); }
 .related-links ul { padding-left: 1.3em; }
 .related-links li { margin-bottom: 6px; }
+.load-error { padding: 18px 20px; border: 1px solid var(--line); color: var(--muted); }
 
-.site-footer {
-  width: min(800px, calc(100% - 64px));
-  margin: 34px auto 0;
-  padding: 28px 0 42px;
-  border-top: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 12px;
-  text-align: center;
-}
-
-.site-footer p { margin: 0 0 4px; }
+.site-footer { width: min(800px, calc(100% - 64px)); margin: 34px auto 0; padding: 28px 0 42px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; text-align: center; }
+.site-footer p { margin: 0; }
 
 @media (max-width: 680px) {
   :root { --nav-height: auto; }
@@ -323,4 +261,5 @@ p { margin: 0 0 1.25em; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .activity-year-menu { transition: none; }
 }
