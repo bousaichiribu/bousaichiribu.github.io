@@ -1,5 +1,3 @@
-const firstActivityYear = 2020;
-
 const carouselPhotos = [
   { src: "/images/home/coast-cliffs.jpg", alt: "海岸沿いの断崖と海" },
   { src: "/images/home/fishing-harbor.jpg", alt: "山に囲まれた漁港" },
@@ -16,42 +14,19 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-function parseActivityMarkdown(source) {
-  const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
-  if (!match) return null;
+async function loadActivities() {
+  const response = await fetch("/content/activities.json", { cache: "no-cache" });
+  if (!response.ok) throw new Error("activity list not found");
 
-  const metadata = {};
-  for (const line of match[1].split(/\r?\n/)) {
-    const separator = line.indexOf(":");
-    if (separator === -1) continue;
-    metadata[line.slice(0, separator).trim()] = line.slice(separator + 1).trim();
-  }
+  const activities = await response.json();
+  if (!Array.isArray(activities)) throw new Error("invalid activity list");
 
-  if (!/^\d{4}$/.test(metadata.year || "")) return null;
-  return {
-    year: metadata.year,
-    schools: (metadata.schools || "").split("｜").map((school) => school.trim()).filter(Boolean),
-    source: metadata.source || "",
-    classSource: metadata.classSource || "",
-    tourSource: metadata.tourSource || "",
-    body: match[2].trim(),
-  };
+  return activities
+    .filter((activity) => /^\d{4}$/.test(activity.year || "") && Array.isArray(activity.schools))
+    .sort((a, b) => Number(b.year) - Number(a.year));
 }
 
-async function fetchActivity(year) {
-  const response = await fetch(`/content/activities/${year}.md`, { cache: "no-cache" });
-  if (!response.ok) return null;
-  return parseActivityMarkdown(await response.text());
-}
-
-async function discoverActivities() {
-  const lastYear = Math.max(new Date().getFullYear() + 1, 2025);
-  const years = Array.from({ length: lastYear - firstActivityYear + 1 }, (_, index) => lastYear - index);
-  const activities = await Promise.all(years.map(fetchActivity));
-  return activities.filter(Boolean).sort((a, b) => Number(b.year) - Number(a.year));
-}
-
-const activitiesPromise = discoverActivities();
+const activitiesPromise = loadActivities();
 
 function renderHeader() {
   const mount = document.querySelector("[data-site-header]");
@@ -150,53 +125,13 @@ function renderLatestActivity() {
   });
 }
 
-function renderMarkdown(source) {
-  const blocks = [];
-  let paragraph = [];
-  let items = [];
-
-  const flushParagraph = () => {
-    if (paragraph.length) {
-      blocks.push(`<p>${escapeHtml(paragraph.join(" "))}</p>`);
-      paragraph = [];
-    }
-  };
-  const flushList = () => {
-    if (items.length) {
-      blocks.push(`<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`);
-      items = [];
-    }
-  };
-
-  for (const rawLine of source.split(/\r?\n/)) {
-    const line = rawLine.trim();
-    if (!line) {
-      flushParagraph();
-      flushList();
-    } else if (line.startsWith("### ")) {
-      flushParagraph();
-      flushList();
-      blocks.push(`<h3>${escapeHtml(line.slice(4))}</h3>`);
-    } else if (line.startsWith("## ")) {
-      flushParagraph();
-      flushList();
-      blocks.push(`<h2>${escapeHtml(line.slice(3))}</h2>`);
-    } else if (line.startsWith("- ")) {
-      flushParagraph();
-      items.push(line.slice(2));
-    } else {
-      flushList();
-      paragraph.push(line);
-    }
-  }
-  flushParagraph();
-  flushList();
-  return blocks.join("");
-}
-
-function resolveArchiveUrl(url, activity) {
+function resolveActivityUrl(url, activity, sourcePath) {
   if (/^(?:https?:|mailto:|tel:|#)/i.test(url)) return url;
   if (/^javascript:/i.test(url)) return "#";
+  if (sourcePath.startsWith("activities/")) {
+    if (url.startsWith("/")) return url;
+    return `/content/activities/${url.replace(/^\.\//, "")}`;
+  }
   if (/^class(?:-\d+)?\.html$/i.test(url)) return `/activity.html?year=${activity.year}&section=class`;
   if (/^touhoku_tour\d{4}\.html$/i.test(url)) return `/activity.html?year=${activity.year}&section=tour`;
 
@@ -210,7 +145,7 @@ function resolveArchiveUrl(url, activity) {
   return `https://www.bin.t.u-tokyo.ac.jp/bousai_${activity.year.slice(2)}/${relative}`;
 }
 
-function prepareArchiveHtml(source, activity) {
+function prepareActivityHtml(source, activity, sourcePath) {
   const documentCopy = new DOMParser().parseFromString(source, "text/html");
   const root = documentCopy.querySelector("#main") || documentCopy.body;
 
@@ -254,7 +189,7 @@ function prepareArchiveHtml(source, activity) {
     }
     for (const attributeName of ["href", "src"]) {
       if (element.hasAttribute(attributeName)) {
-        element.setAttribute(attributeName, resolveArchiveUrl(element.getAttribute(attributeName), activity));
+        element.setAttribute(attributeName, resolveActivityUrl(element.getAttribute(attributeName), activity, sourcePath));
       }
     }
   });
@@ -289,7 +224,7 @@ async function renderActivityDetail() {
   }
 
   try {
-    const activity = await fetchActivity(year);
+    const activity = (await activitiesPromise).find((item) => item.year === year);
     if (!activity) throw new Error("not found");
 
     const labels = { index: "活動記録", class: "活動の進め方", tour: "東北復興視察" };
@@ -304,12 +239,10 @@ async function renderActivityDetail() {
       ? `<p class="activity-schools"><strong>参加校</strong><br>${activity.schools.map(escapeHtml).join("、")}</p>`
       : "";
 
-    let content = renderMarkdown(activity.body);
-    if (archiveFilename) {
-      const response = await fetch(`/content/archive/${archiveFilename}`);
-      if (!response.ok) throw new Error("archive not found");
-      content = `<div class="archive-source">${prepareArchiveHtml(await response.text(), activity)}</div>`;
-    }
+    if (!archiveFilename) throw new Error("activity source not found");
+    const response = await fetch(`/content/${archiveFilename}`);
+    if (!response.ok) throw new Error("activity source not found");
+    const content = `<div class="archive-source">${prepareActivityHtml(await response.text(), activity, archiveFilename)}</div>`;
 
     const backLink = section === "index"
       ? '<a class="text-link" href="/activities.html">年度ごとの活動記録へ戻る →</a>'

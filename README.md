@@ -10,17 +10,35 @@ HTML、CSS、JavaScriptだけで表示する静的サイトです。React、Next
 - `contact.html` — お問い合わせ
 - `style.css` — 全ページ共通の見た目
 - `site.js` — 写真切替、年度メニュー、活動記録の読み込み
-- `content/activities/` — 年度ごとのMarkdown
-- `content/archive/` — 以前のサイトから移した完全な活動記録
+- `content/archive/` — 2020〜2025年度の過去資料（通常は編集しません）
+- `content/activities/` — 2026年度以降の活動記録HTML
+- `content/activities.json` — 年度、参加校、表示するHTMLファイルの一覧
 - `images/` — 写真
 
 ## 年度を追加する
 
-1. `content/activities/_template.md`をコピーして、例えば`2026.md`を作ります。
-2. `year`、`schools`、本文を編集します。
-3. 以前のHTML資料がある場合だけ`content/archive/`へ入れ、Markdownの`source`、`classSource`、`tourSource`にファイル名を書きます。
+現在はMarkdownを使いません。2020〜2025年度の`content/archive/`は過去資料としてそのまま残します。
 
-年度一覧と上部メニューはMarkdownを自動的に探して表示します。活動記録のURLは`activity.html?year=2026`です。
+1. `content/activities/_template.html`をコピーし、例えば`2026index.html`を作って活動内容を編集します。
+2. 写真は`images/activities/2026/`のように年度別フォルダへ入れます。
+3. `content/activities.json`の先頭へ2026年度を追加します。
+
+```json
+{
+  "year": "2026",
+  "schools": ["高校A", "高校B"],
+  "source": "activities/2026index.html"
+}
+```
+
+「活動の進め方」や「東北復興視察」を別ページにする場合は、同じ`content/activities/`へHTMLを置き、次の項目を追加します。
+
+```json
+"classSource": "activities/class2026.html",
+"tourSource": "activities/touhoku_tour2026.html"
+```
+
+年度一覧と上部メニューは`content/activities.json`から自動的に作られます。活動記録のURLは`activity.html?year=2026`です。
 
 ## ローカルで確認する
 

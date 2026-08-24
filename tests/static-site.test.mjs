@@ -13,12 +13,14 @@ test("home keeps the full philosophy and carousel", async () => {
   assert.match(home, /data-carousel-next/);
 });
 
-test("plain JavaScript provides the year menu and four photos", async () => {
+test("plain JavaScript provides the JSON-backed year menu and four photos", async () => {
   const script = await readFile(new URL("../site.js", import.meta.url), "utf8");
   assert.match(script, /年度別の活動記録を開く/);
   assert.match(script, /carouselPhotos/);
   assert.match(script, /coast-harbor\.jpg/);
-  assert.match(script, /discoverActivities/);
+  assert.match(script, /\/content\/activities\.json/);
+  assert.match(script, /loadActivities/);
+  assert.doesNotMatch(script, /Markdown|\.md/);
   assert.doesNotMatch(script, /React|Next\.js|node_modules/);
 });
 
@@ -42,14 +44,20 @@ test("contact and related links are present", async () => {
   assert.match(contact, /https:\/\/www\.bin\.t\.u-tokyo\.ac\.jp\//);
 });
 
-test("all yearly Markdown and complete archives remain", async () => {
-  for (const year of [2020, 2021, 2022, 2023, 2024, 2025]) {
-    const markdown = await readFile(new URL(`../content/activities/${year}.md`, import.meta.url), "utf8");
-    assert.match(markdown, new RegExp(`year: ${year}`));
+test("the activity list points to the complete 2020-2025 archives", async () => {
+  const activities = JSON.parse(await readFile(new URL("../content/activities.json", import.meta.url), "utf8"));
+  assert.deepEqual(activities.map((activity) => activity.year), ["2025", "2024", "2023", "2022", "2021", "2020"]);
+  for (const activity of activities) {
+    assert.match(activity.source, new RegExp(`^archive/${activity.year}index\\.html$`));
+    await access(new URL(`../content/${activity.source}`, import.meta.url));
+    await assert.rejects(access(new URL(`../content/activities/${activity.year}.md`, import.meta.url)));
   }
+
+  const template = await readFile(new URL("../content/activities/_template.html", import.meta.url), "utf8");
   const activity2020 = await readFile(new URL("../content/archive/2020index.html", import.meta.url), "utf8");
   const class2024 = await readFile(new URL("../content/archive/class.html", import.meta.url), "utf8");
   const tour2025 = await readFile(new URL("../content/archive/touhoku_tour2025.html", import.meta.url), "utf8");
+  assert.match(template, /<main id="main">/);
   assert.match(activity2020, /各校の提案プラン/);
   assert.match(class2024, /7\. プランを実践してみる/);
   assert.match(tour2025, /大川小学校/);
@@ -59,13 +67,15 @@ test("build output contains static pages and the small hosting entry", async () 
   for (const path of [
     "dist/client/index.html",
     "dist/client/activity.html",
-    "dist/client/content/activities/2025.md",
+    "dist/client/content/activities.json",
+    "dist/client/content/activities/_template.html",
     "dist/client/images/home/coast-cliffs.jpg",
     "dist/server/index.js",
     "dist/.openai/hosting.json",
   ]) {
     await access(new URL(`../${path}`, import.meta.url));
   }
+  await assert.rejects(access(new URL("../dist/client/content/activities/2025.md", import.meta.url)));
 });
 
 test("the hosting entry serves the static index", async () => {
