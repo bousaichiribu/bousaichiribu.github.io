@@ -3,39 +3,33 @@
     "year": "2025",
     "schools": ["宇和島東高校", "宇和島南高校", "大洲高校", "大洲農業高校", "天竜高校", "南宇和高校", "八幡浜高校"],
     "source": "archive/2025index.html",
-    "classSource": "archive/class.html",
     "tourSource": "archive/touhoku_tour2025.html"
   },
   {
     "year": "2024",
     "schools": ["八幡浜高校", "宇和島東高校", "宇和島南中等教育学校", "南宇和高校", "大洲高校", "大洲農業高校", "天竜高校"],
     "source": "archive/2024index.html",
-    "classSource": "archive/class.html",
     "tourSource": "archive/touhoku_tour2024.html"
   },
   {
     "year": "2023",
     "schools": ["八幡浜高校", "宇和島東高校", "浜松工業高校", "南宇和高校", "大阪教育大学附属高校天王寺校舎", "新居浜南高校", "阿南工業高等専門学校", "なみえ創成中学校", "三崎高校"],
     "source": "archive/2023index.html",
-    "classSource": "archive/class-2.html",
     "tourSource": "archive/touhoku_tour2023.html"
   },
   {
     "year": "2022",
     "schools": ["阿南工業高等専門学校", "宇和島東高校", "大阪教育大学附属天王寺中学校", "新居浜南高校", "なみえ創成中学校", "浜松工業高校", "三崎高校", "八幡浜高校"],
-    "source": "archive/2022index.html",
-    "classSource": "archive/class-3.html"
+    "source": "archive/2022index.html"
   },
   {
     "year": "2021",
     "schools": ["八幡浜高校", "三崎高校", "宇和島東高校", "今治北高校大三島分校", "今治西高校伯方分校", "新居浜南高校", "浜松工業高校"],
-    "source": "archive/2021index.html",
-    "classSource": "archive/class-3.html"
+    "source": "archive/2021index.html"
   },
   {
     "year": "2020",
     "schools": ["愛光学園", "宇和島東高校", "三崎高校", "八幡浜高校", "今治北高校大三島分校", "今治西高校伯方分校"],
-    "source": "archive/2020index.html",
-    "classSource": "archive/class-3.html"
+    "source": "archive/2020index.html"
   }
 ]

@@ -20,6 +20,7 @@ test("plain JavaScript provides the JSON-backed year menu and four photos", asyn
   assert.match(script, /coast-harbor\.jpg/);
   assert.match(script, /\/content\/activities\.json/);
   assert.match(script, /loadActivities/);
+  assert.match(script, /href="\/how-to\.html">活動の進め方/);
   assert.doesNotMatch(script, /Markdown|\.md/);
   assert.doesNotMatch(script, /React|Next\.js|node_modules/);
 });
@@ -59,18 +60,30 @@ test("the activity list points to the complete 2020-2025 archives", async () => 
   assert.deepEqual(activities.map((activity) => activity.year), ["2025", "2024", "2023", "2022", "2021", "2020"]);
   for (const activity of activities) {
     assert.match(activity.source, new RegExp(`^archive/${activity.year}index\\.html$`));
+    assert.equal(activity.classSource, undefined);
     await access(new URL(`../content/${activity.source}`, import.meta.url));
     await assert.rejects(access(new URL(`../content/activities/${activity.year}.md`, import.meta.url)));
   }
 
   const template = await readFile(new URL("../content/activities/_template.html", import.meta.url), "utf8");
   const activity2020 = await readFile(new URL("../content/archive/2020index.html", import.meta.url), "utf8");
-  const class2024 = await readFile(new URL("../content/archive/class.html", import.meta.url), "utf8");
+  const howTo = await readFile(new URL("../how-to.html", import.meta.url), "utf8");
   const tour2025 = await readFile(new URL("../content/archive/touhoku_tour2025.html", import.meta.url), "utf8");
   assert.match(template, /<main id="main">/);
   assert.match(activity2020, /各校の提案プラン/);
-  assert.match(class2024, /7\. プランを実践してみる/);
+  assert.match(howTo, /7\. プランを実践してみる/);
+  assert.match(howTo, /石巻がれき処理/);
+  assert.match(howTo, /\/content\/archive\/files\/Layer_analysis\.pdf/);
   assert.match(tour2025, /大川小学校/);
+
+  for (const activity of activities) {
+    const annual = await readFile(new URL(`../content/${activity.source}`, import.meta.url), "utf8");
+    assert.match(annual, /^<main id="main">\s*<h2(?: id="date")?>日程<\/h2>/);
+    assert.doesNotMatch(annual, /目次|活動概要|演習資料/);
+  }
+  for (const oldClass of ["class.html", "class-2.html", "class-3.html"]) {
+    await assert.rejects(access(new URL(`../content/archive/${oldClass}`, import.meta.url)));
+  }
 });
 
 test("archive fragments and their media are self-contained", async () => {
@@ -96,6 +109,7 @@ test("build output contains static pages and the small hosting entry", async () 
   for (const path of [
     "dist/client/index.html",
     "dist/client/activity.html",
+    "dist/client/how-to.html",
     "dist/client/content/activities.json",
     "dist/client/content/activities/_template.html",
     "dist/client/content/archive/img/2023_1.png",

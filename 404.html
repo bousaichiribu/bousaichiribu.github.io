@@ -17,10 +17,16 @@
     const path = window.location.pathname.replace(/\/+$/, "");
     const activity = path.match(/\/activities\/(\d{4})(?:\/(class|tour))?$/);
     if (activity) {
-      const section = activity[2] ? `&section=${activity[2]}` : "";
-      window.location.replace(`/activity.html?year=${activity[1]}${section}`);
+      if (activity[2] === "class") {
+        window.location.replace("/how-to.html");
+      } else {
+        const section = activity[2] ? `&section=${activity[2]}` : "";
+        window.location.replace(`/activity.html?year=${activity[1]}${section}`);
+      }
     } else if (path === "/activities") {
       window.location.replace("/activities.html");
+    } else if (path === "/how-to") {
+      window.location.replace("/how-to.html");
     } else if (path === "/contact" || path === "/contact.html") {
       window.location.replace("/#contact");
     }

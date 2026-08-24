@@ -46,6 +46,7 @@ function renderHeader() {
               </span>
               <ul class="activity-year-menu" data-year-menu aria-label="年度別の活動記録"></ul>
             </li>
+            <li><a href="/how-to.html">活動の進め方</a></li>
             <li><a href="/#contact">お問い合わせ</a></li>
           </ul>
         </nav>
@@ -128,7 +129,7 @@ function renderLatestActivity() {
 function resolveActivityUrl(url, activity, sourcePath) {
   if (/^(?:https?:|mailto:|tel:|#)/i.test(url)) return url;
   if (/^javascript:/i.test(url)) return "#";
-  if (/^class(?:-\d+)?\.html$/i.test(url)) return `/activity.html?year=${activity.year}&section=class`;
+  if (/^class(?:-\d+)?\.html$/i.test(url)) return "/how-to.html";
   if (/^touhoku_tour\d{4}\.html$/i.test(url)) return `/activity.html?year=${activity.year}&section=tour`;
   if (url.startsWith("/")) return url;
 
@@ -160,7 +161,6 @@ function prepareActivityHtml(source, activity, sourcePath) {
 function sectionLinks(activity, current) {
   const sections = [
     activity.source && ["index", "年度の活動"],
-    activity.classSource && ["class", "活動の進め方"],
     activity.tourSource && ["tour", "東北復興視察"],
   ].filter(Boolean);
 
@@ -178,7 +178,11 @@ async function renderActivityDetail() {
   const parameters = new URLSearchParams(window.location.search);
   const year = parameters.get("year") || "";
   const section = parameters.get("section") || "index";
-  if (!/^\d{4}$/.test(year) || !["index", "class", "tour"].includes(section)) {
+  if (section === "class") {
+    window.location.replace("/how-to.html");
+    return;
+  }
+  if (!/^\d{4}$/.test(year) || !["index", "tour"].includes(section)) {
     mount.innerHTML = '<h1>活動記録</h1><p class="load-error">年度が指定されていません。</p>';
     return;
   }
@@ -187,8 +191,8 @@ async function renderActivityDetail() {
     const activity = (await activitiesPromise).find((item) => item.year === year);
     if (!activity) throw new Error("not found");
 
-    const labels = { index: "活動記録", class: "活動の進め方", tour: "東北復興視察" };
-    const sourceNames = { index: "source", class: "classSource", tour: "tourSource" };
+    const labels = { index: "活動記録", tour: "東北復興視察" };
+    const sourceNames = { index: "source", tour: "tourSource" };
     const archiveFilename = activity[sourceNames[section]];
     document.title = `${year}年度 ${labels[section]}｜防災地理部`;
 

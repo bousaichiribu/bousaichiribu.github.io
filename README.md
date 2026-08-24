@@ -7,6 +7,7 @@ HTML、CSS、JavaScriptだけで表示する静的サイトです。React、Next
 - `index.html` — ホーム
 - `activities.html` — 年度別活動記録の一覧
 - `activity.html` — 各年度の活動記録
+- `how-to.html` — 共通の「活動の進め方」と参考資料
 - `style.css` — 全ページ共通の見た目
 - `site.js` — 写真切替、年度メニュー、活動記録の読み込み
 - `content/archive/` — 2020〜2025年度の本文、画像、PDF（通常は編集しません）
@@ -36,14 +37,13 @@ HTML、CSS、JavaScriptだけで表示する静的サイトです。React、Next
 }
 ```
 
-「活動の進め方」や「東北復興視察」を別ページにする場合は、同じ`content/activities/`へHTMLを置き、次の項目を追加します。
+「東北復興視察」を年度内の別ページにする場合は、同じ`content/activities/`へHTMLを置き、次の項目を追加します。
 
 ```json
-"classSource": "activities/class2026.html",
 "tourSource": "activities/touhoku_tour2026.html"
 ```
 
-年度一覧と上部メニューは`content/activities.json`から自動的に作られます。活動記録のURLは`activity.html?year=2026`です。
+年度一覧と上部メニューは`content/activities.json`から自動的に作られます。活動記録のURLは`activity.html?year=2026`です。「活動の進め方」は年度共通の独立ページとして`how-to.html`を編集します。
 
 ## ローカルで確認する
 

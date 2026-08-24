@@ -271,7 +271,7 @@ p { margin: 0 0 1.25em; }
   .site-header { position: relative; }
   .nav-shell { width: calc(100% - 36px); padding: 18px 0 14px; flex-direction: column; align-items: flex-start; gap: 12px; }
   .site-nav { width: 100%; }
-  .site-nav > ul { width: max-content; gap: 20px; }
+  .site-nav > ul { width: 100%; flex-wrap: wrap; gap: 10px 18px; }
   .site-nav a { font-size: 12px; }
   .activity-year-menu { top: calc(100% + 9px); left: -10px; }
   .home-carousel { height: 54vw; min-height: 230px; }
