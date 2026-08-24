@@ -128,21 +128,13 @@ function renderLatestActivity() {
 function resolveActivityUrl(url, activity, sourcePath) {
   if (/^(?:https?:|mailto:|tel:|#)/i.test(url)) return url;
   if (/^javascript:/i.test(url)) return "#";
-  if (sourcePath.startsWith("activities/")) {
-    if (url.startsWith("/")) return url;
-    return `/content/activities/${url.replace(/^\.\//, "")}`;
-  }
   if (/^class(?:-\d+)?\.html$/i.test(url)) return `/activity.html?year=${activity.year}&section=class`;
   if (/^touhoku_tour\d{4}\.html$/i.test(url)) return `/activity.html?year=${activity.year}&section=tour`;
+  if (url.startsWith("/")) return url;
 
-  const internalYear = url.match(/^\/bousai_(\d{2})\/?$/);
-  if (internalYear) return `/activity.html?year=20${internalYear[1]}`;
-  const internalTour = url.match(/^\/bousai_(\d{2})\/touhoku_tour\d{4}\.html$/);
-  if (internalTour) return `/activity.html?year=20${internalTour[1]}&section=tour`;
-
-  if (url.startsWith("/")) return `https://www.bin.t.u-tokyo.ac.jp${url}`;
+  const sourceDirectory = sourcePath.slice(0, sourcePath.lastIndexOf("/") + 1);
   const relative = url.replace(/^\.\//, "");
-  return `https://www.bin.t.u-tokyo.ac.jp/bousai_${activity.year.slice(2)}/${relative}`;
+  return `/content/${sourceDirectory}${relative}`;
 }
 
 function prepareActivityHtml(source, activity, sourcePath) {
@@ -150,38 +142,6 @@ function prepareActivityHtml(source, activity, sourcePath) {
   const root = documentCopy.querySelector("#main") || documentCopy.body;
 
   root.querySelectorAll("script").forEach((element) => element.remove());
-  root.querySelectorAll("ul").forEach((element) => {
-    if (element.textContent.includes("研究室TOP")) element.remove();
-  });
-
-  root.querySelectorAll("h2").forEach((heading) => {
-    if (/防災地理部の活動理念|防災地理部の設立にあたって/.test(heading.textContent.trim())) {
-      let element = heading;
-      while (element) {
-        const next = element.nextElementSibling;
-        element.remove();
-        if (!next || next.tagName === "H2") break;
-        element = next;
-      }
-    }
-  });
-
-  const inquiry = root.querySelector("#inquiry");
-  if (inquiry) {
-    let element = inquiry;
-    while (element) {
-      const next = element.nextElementSibling;
-      element.remove();
-      element = next;
-    }
-  }
-
-  root.querySelectorAll("input").forEach((element) => {
-    const note = documentCopy.createElement("span");
-    note.className = "restricted-note";
-    note.textContent = "限定公開資料";
-    element.replaceWith(note);
-  });
 
   root.querySelectorAll("*").forEach((element) => {
     for (const attribute of [...element.attributes]) {

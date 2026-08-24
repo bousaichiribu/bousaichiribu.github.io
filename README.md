@@ -10,7 +10,9 @@ HTML、CSS、JavaScriptだけで表示する静的サイトです。React、Next
 - `contact.html` — お問い合わせ
 - `style.css` — 全ページ共通の見た目
 - `site.js` — 写真切替、年度メニュー、活動記録の読み込み
-- `content/archive/` — 2020〜2025年度の過去資料（通常は編集しません）
+- `content/archive/` — 2020〜2025年度の本文、画像、PDF（通常は編集しません）
+- `content/archive/img/` — 過年度ページで使用するローカル画像
+- `content/archive/files/` — 過年度ページで使用するローカルPDF
 - `content/activities/` — 2026年度以降の活動記録HTML
 - `content/activities.json` — 年度、参加校、表示するHTMLファイルの一覧
 - `images/` — 写真
@@ -18,6 +20,8 @@ HTML、CSS、JavaScriptだけで表示する静的サイトです。React、Next
 ## 年度を追加する
 
 現在はMarkdownを使いません。2020〜2025年度の`content/archive/`は過去資料としてそのまま残します。
+
+過年度のHTMLは現在のサイトへ挿入する本文断片だけを保存しています。旧・羽藤研究室サイトから画像やPDFを読み込む処理はありません。YouTubeやSpeaker Deckなど、資料そのものが外部サービスにある埋め込み・リンクだけは外部参照です。
 
 1. `content/activities/_template.html`をコピーし、例えば`2026index.html`を作って活動内容を編集します。
 2. 写真は`images/activities/2026/`のように年度別フォルダへ入れます。

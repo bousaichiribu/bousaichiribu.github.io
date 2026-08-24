@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { access, readFile } from "node:fs/promises";
+import { access, readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
 const root = new URL("../", import.meta.url);
@@ -42,6 +42,7 @@ test("contact and related links are present", async () => {
   assert.match(contact, /matsunaga \[at\] bin\.t\.u-tokyo\.ac\.jp/);
   assert.match(contact, /https:\/\/dss\.bin\.t\.u-tokyo\.ac\.jp\/alliance\//);
   assert.match(contact, /https:\/\/www\.bin\.t\.u-tokyo\.ac\.jp\//);
+  assert.match(contact, /https:\/\/speakerdeck\.com\/bousaichiribu/);
 });
 
 test("the activity list points to the complete 2020-2025 archives", async () => {
@@ -63,12 +64,33 @@ test("the activity list points to the complete 2020-2025 archives", async () => 
   assert.match(tour2025, /大川小学校/);
 });
 
+test("archive fragments and their media are self-contained", async () => {
+  const archiveDirectory = new URL("../content/archive/", import.meta.url);
+  const archiveFiles = (await readdir(archiveDirectory)).filter((name) => name.endsWith(".html"));
+  const script = await readFile(new URL("../site.js", import.meta.url), "utf8");
+
+  assert.doesNotMatch(script, /www\.bin\.t\.u-tokyo\.ac\.jp\/bousai_/);
+  assert.match(script, /`\/content\/\$\{sourceDirectory\}\$\{relative\}`/);
+
+  for (const filename of archiveFiles) {
+    const source = await readFile(new URL(filename, archiveDirectory), "utf8");
+    assert.match(source, /^<main id="main">/);
+    assert.doesNotMatch(source, /<!DOCTYPE|<html|<head|<body|id="wrapper"|研究室TOP|\/seminar\.html|<input|onclick=/i);
+
+    for (const match of source.matchAll(/(?:src|href)=["']((?:img|files)\/[^"']+)["']/gi)) {
+      await access(new URL(match[1], archiveDirectory));
+    }
+  }
+});
+
 test("build output contains static pages and the small hosting entry", async () => {
   for (const path of [
     "dist/client/index.html",
     "dist/client/activity.html",
     "dist/client/content/activities.json",
     "dist/client/content/activities/_template.html",
+    "dist/client/content/archive/img/2023_1.png",
+    "dist/client/content/archive/files/Layer_analysis.pdf",
     "dist/client/images/home/coast-cliffs.jpg",
     "dist/server/index.js",
     "dist/.openai/hosting.json",
