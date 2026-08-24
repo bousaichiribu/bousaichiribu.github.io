@@ -199,6 +199,7 @@ p { margin: 0 0 1.25em; }
 
 .home-section { margin: 0; padding: 0 0 52px; border-top: 1px solid var(--line); }
 .home-section h2 { margin-top: 44px; }
+#contact { scroll-margin-top: calc(var(--nav-height) + 22px); }
 .text-link { text-decoration: underline; }
 
 .prose { max-width: 720px; }
@@ -257,13 +258,9 @@ p { margin: 0 0 1.25em; }
 .archive-source ol.indx { margin: 14px 0 38px; }
 .archive-source .restricted-note { display: inline-block; padding: 2px 8px; border: 1px solid var(--line); color: var(--muted); font-size: 12px; }
 
-.contact-box { padding: 30px 34px; border: 1px solid var(--line); }
-.contact-box p { margin-bottom: 10px; }
-.contact-box .contact-person { margin-top: 24px; font-weight: 600; }
-.related-links { margin-top: 58px; }
-.related-links h2 { padding-top: 20px; border-top: 1px solid var(--line); }
-.related-links ul { padding-left: 1.3em; }
-.related-links li { margin-bottom: 6px; }
+.related-link-list { margin-bottom: 0; padding-left: 1.3em; }
+.related-link-list li { margin-bottom: 6px; }
+.contact-person { margin-top: 24px; font-weight: 600; }
 .load-error { padding: 18px 20px; border: 1px solid var(--line); color: var(--muted); }
 
 .site-footer { width: min(800px, calc(100% - 64px)); margin: 34px auto 0; padding: 28px 0 42px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; text-align: center; }
@@ -285,7 +282,6 @@ p { margin: 0 0 1.25em; }
   .archive-source h2 { padding: 10px 12px 9px; font-size: 22px; }
   .archive-source h3 { font-size: 19px; }
   .archive-source iframe { min-height: 220px; }
-  .contact-box { padding: 24px 20px; }
   .site-footer { width: calc(100% - 40px); }
 }
 

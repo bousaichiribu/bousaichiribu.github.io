@@ -37,12 +37,21 @@ test("archive headings have visible hierarchy and hash navigation", async () => 
   assert.match(script, /scrollIntoView/);
 });
 
-test("contact and related links are present", async () => {
-  const contact = await readFile(new URL("../contact.html", import.meta.url), "utf8");
-  assert.match(contact, /matsunaga \[at\] bin\.t\.u-tokyo\.ac\.jp/);
-  assert.match(contact, /https:\/\/dss\.bin\.t\.u-tokyo\.ac\.jp\/alliance\//);
-  assert.match(contact, /https:\/\/www\.bin\.t\.u-tokyo\.ac\.jp\//);
-  assert.match(contact, /https:\/\/speakerdeck\.com\/bousaichiribu/);
+test("contact and related links are sections on the home page", async () => {
+  const home = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const script = await readFile(new URL("../site.js", import.meta.url), "utf8");
+  const notFound = await readFile(new URL("../404.html", import.meta.url), "utf8");
+  assert.match(home, /<section class="home-section" aria-labelledby="related-links-title">/);
+  assert.match(home, /<section class="home-section" id="contact"/);
+  assert.match(home, /matsunaga \[at\] bin\.t\.u-tokyo\.ac\.jp/);
+  assert.match(home, /https:\/\/dss\.bin\.t\.u-tokyo\.ac\.jp\/alliance\//);
+  assert.match(home, /https:\/\/www\.bin\.t\.u-tokyo\.ac\.jp\//);
+  assert.match(home, /https:\/\/speakerdeck\.com\/bousaichiribu/);
+  assert.match(script, /href="\/#contact"/);
+  assert.doesNotMatch(script, /contact\.html/);
+  assert.match(notFound, /path === "\/contact" \|\| path === "\/contact\.html"/);
+  assert.match(notFound, /window\.location\.replace\("\/#contact"\)/);
+  await assert.rejects(access(new URL("../contact.html", import.meta.url)));
 });
 
 test("the activity list points to the complete 2020-2025 archives", async () => {
@@ -97,6 +106,7 @@ test("build output contains static pages and the small hosting entry", async () 
   ]) {
     await access(new URL(`../${path}`, import.meta.url));
   }
+  await assert.rejects(access(new URL("../dist/client/contact.html", import.meta.url)));
   await assert.rejects(access(new URL("../dist/client/content/activities/2025.md", import.meta.url)));
 });
 

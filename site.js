@@ -46,7 +46,7 @@ function renderHeader() {
               </span>
               <ul class="activity-year-menu" data-year-menu aria-label="年度別の活動記録"></ul>
             </li>
-            <li><a href="/contact.html">お問い合わせ</a></li>
+            <li><a href="/#contact">お問い合わせ</a></li>
           </ul>
         </nav>
       </div>

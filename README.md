@@ -7,7 +7,6 @@ HTML、CSS、JavaScriptだけで表示する静的サイトです。React、Next
 - `index.html` — ホーム
 - `activities.html` — 年度別活動記録の一覧
 - `activity.html` — 各年度の活動記録
-- `contact.html` — お問い合わせ
 - `style.css` — 全ページ共通の見た目
 - `site.js` — 写真切替、年度メニュー、活動記録の読み込み
 - `content/archive/` — 2020〜2025年度の本文、画像、PDF（通常は編集しません）
@@ -16,6 +15,8 @@ HTML、CSS、JavaScriptだけで表示する静的サイトです。React、Next
 - `content/activities/` — 2026年度以降の活動記録HTML
 - `content/activities.json` — 年度、参加校、表示するHTMLファイルの一覧
 - `images/` — 写真
+
+関連リンクとお問い合わせは、`index.html`の下部にあります。
 
 ## 年度を追加する
 
