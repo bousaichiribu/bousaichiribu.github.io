@@ -13,11 +13,12 @@ test("home keeps the full philosophy and carousel", async () => {
   assert.match(home, /data-carousel-next/);
 });
 
-test("plain JavaScript provides the JSON-backed year menu and four photos", async () => {
+test("plain JavaScript provides the JSON-backed year menu and nine WebP photos", async () => {
   const script = await readFile(new URL("../site.js", import.meta.url), "utf8");
   assert.match(script, /年度別の活動記録を開く/);
   assert.match(script, /carouselPhotos/);
-  assert.match(script, /coast-harbor\.jpg/);
+  assert.match(script, /DSC_1633\.webp/);
+  assert.match(script, /fishing-harbor\.webp/);
   assert.match(script, /\/content\/activities\.json/);
   assert.match(script, /loadActivities/);
   assert.match(script, /href="\/how-to\.html">活動の進め方/);
@@ -118,7 +119,7 @@ test("build output contains static pages and the small hosting entry", async () 
     "dist/client/content/activities/_template.html",
     "dist/client/content/archive/img/2023_1.png",
     "dist/client/content/archive/files/Layer_analysis.pdf",
-    "dist/client/images/home/coast-cliffs.jpg",
+    "dist/client/images/home/DSC_1633.webp",
     "dist/server/index.js",
     "dist/.openai/hosting.json",
   ]) {

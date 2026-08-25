@@ -1,8 +1,13 @@
 const carouselPhotos = [
-  { src: "/images/home/coast-cliffs.jpg", alt: "海岸沿いの断崖と海" },
-  { src: "/images/home/fishing-harbor.jpg", alt: "山に囲まれた漁港" },
-  { src: "/images/home/coast-dawn.jpg", alt: "海を望む林と明け方の空" },
-  { src: "/images/home/coast-harbor.jpg", alt: "断崖に囲まれた静かな港" },
+  { src: "/images/home/DSC_1633.webp", alt: "山と市街地を見渡す高台からの風景" },
+  { src: "/images/home/DSC_2051.webp", alt: "山あいの市街地を通る道路" },
+  { src: "/images/home/DSC_2052.webp", alt: "川と田畑に沿って広がる住宅地" },
+  { src: "/images/home/DSC_2113.webp", alt: "商店街のアーケードを歩く学生たち" },
+  { src: "/images/home/DSC_6860.webp", alt: "山に囲まれた谷あいの市街地" },
+  { src: "/images/home/DSC_6974.webp", alt: "枝いっぱいに実ったみかん" },
+  { src: "/images/home/IMG_2505.webp", alt: "高台から見渡す海沿いのまち" },
+  { src: "/images/home/IMG_5364.webp", alt: "青空の下の歩道橋と交差点" },
+  { src: "/images/home/fishing-harbor.webp", alt: "山に囲まれた漁港" },
 ];
 
 function escapeHtml(value) {
