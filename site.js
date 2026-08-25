@@ -1,6 +1,6 @@
 const carouselPhotos = [
+  { src: "/images/home/ainan.webp", alt: "山を背景にした愛南町の道路と市街地" },
   { src: "/images/home/DSC_1633.webp", alt: "山と市街地を見渡す高台からの風景" },
-  { src: "/images/home/DSC_2051.webp", alt: "山あいの市街地を通る道路" },
   { src: "/images/home/DSC_2052.webp", alt: "川と田畑に沿って広がる住宅地" },
   { src: "/images/home/DSC_2113.webp", alt: "商店街のアーケードを歩く学生たち" },
   { src: "/images/home/DSC_6860.webp", alt: "山に囲まれた谷あいの市街地" },
