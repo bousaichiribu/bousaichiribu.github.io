@@ -41,7 +41,12 @@ function renderHeader() {
     <header class="site-header">
       <div class="nav-shell">
         <a class="brand" href="/">防災地理部</a>
-        <nav class="site-nav" aria-label="メインナビゲーション">
+        <button class="site-menu-toggle" type="button" aria-controls="site-navigation" aria-expanded="false" aria-label="メニューを開く">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+        <nav class="site-nav" id="site-navigation" aria-label="メインナビゲーション">
           <ul>
             <li><a href="/">ホーム</a></li>
             <li><a href="/organization.html">体制</a></li>
@@ -59,17 +64,42 @@ function renderHeader() {
       </div>
     </header>`;
 
-  const menu = mount.querySelector(".nav-activity-menu");
-  const toggle = mount.querySelector(".activity-menu-toggle");
-  toggle.addEventListener("click", () => {
-    const open = menu.dataset.open !== "true";
-    menu.dataset.open = open ? "true" : "false";
-    toggle.setAttribute("aria-expanded", String(open));
+  const header = mount.querySelector(".site-header");
+  const siteNav = mount.querySelector(".site-nav");
+  const siteMenuToggle = mount.querySelector(".site-menu-toggle");
+  const activityMenu = mount.querySelector(".nav-activity-menu");
+  const activityToggle = mount.querySelector(".activity-menu-toggle");
+
+  const setSiteMenuOpen = (open) => {
+    header.dataset.menuOpen = open ? "true" : "false";
+    siteMenuToggle.setAttribute("aria-expanded", String(open));
+    siteMenuToggle.setAttribute("aria-label", open ? "メニューを閉じる" : "メニューを開く");
+  };
+
+  const setActivityMenuOpen = (open) => {
+    activityMenu.dataset.open = open ? "true" : "false";
+    activityToggle.setAttribute("aria-expanded", String(open));
+  };
+
+  siteMenuToggle.addEventListener("click", () => {
+    setSiteMenuOpen(header.dataset.menuOpen !== "true");
   });
-  menu.addEventListener("focusout", (event) => {
-    if (!menu.contains(event.relatedTarget)) {
-      menu.dataset.open = "false";
-      toggle.setAttribute("aria-expanded", "false");
+  siteNav.addEventListener("click", (event) => {
+    if (event.target.closest?.("a")) setSiteMenuOpen(false);
+  });
+  header.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    setSiteMenuOpen(false);
+    setActivityMenuOpen(false);
+    siteMenuToggle.focus();
+  });
+
+  activityToggle.addEventListener("click", () => {
+    setActivityMenuOpen(activityMenu.dataset.open !== "true");
+  });
+  activityMenu.addEventListener("focusout", (event) => {
+    if (!activityMenu.contains(event.relatedTarget)) {
+      setActivityMenuOpen(false);
     }
   });
 

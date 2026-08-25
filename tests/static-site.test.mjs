@@ -56,6 +56,20 @@ test("plain JavaScript provides the JSON-backed year menu and nine WebP photos",
   assert.doesNotMatch(script, /React|Next\.js|node_modules/);
 });
 
+test("header stays visible and collapses into an accessible menu", async () => {
+  const [style, script] = await Promise.all([
+    readFile(new URL("../style.css", import.meta.url), "utf8"),
+    readFile(new URL("../site.js", import.meta.url), "utf8"),
+  ]);
+  assert.match(style, /\[data-site-header\] \{[\s\S]*?position: sticky;/);
+  assert.match(style, /@media \(max-width: 800px\)/);
+  assert.match(style, /\.site-header\[data-menu-open="true"\] \.site-nav \{ display: block; \}/);
+  assert.match(script, /class="site-menu-toggle"/);
+  assert.match(script, /aria-controls="site-navigation"/);
+  assert.match(script, /setSiteMenuOpen/);
+  assert.match(script, /event\.key !== "Escape"/);
+});
+
 test("archive headings have visible hierarchy and hash navigation", async () => {
   const [activityPage, style, script] = await Promise.all([
     readFile(new URL("../activity.html", import.meta.url), "utf8"),
