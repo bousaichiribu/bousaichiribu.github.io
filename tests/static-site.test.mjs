@@ -33,7 +33,7 @@ test("archive headings have visible hierarchy and hash navigation", async () => 
     readFile(new URL("../site.js", import.meta.url), "utf8"),
   ]);
   assert.match(activityPage, /class="main-content activity-main"/);
-  assert.match(style, /\.activity-main \{ width: min\(1000px,/);
+  assert.match(style, /\.activity-main \{ width: min\(1350px,/);
   assert.match(style, /\.activity-detail \{ max-width: none; \}/);
   assert.match(style, /\.archive-source h2 \{/);
   assert.match(style, /border-left: 4px solid #444/);
