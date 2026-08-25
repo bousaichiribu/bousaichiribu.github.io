@@ -135,7 +135,9 @@ function resolveActivityUrl(url, activity, sourcePath) {
   if (/^(?:https?:|mailto:|tel:|#)/i.test(url)) return url;
   if (/^javascript:/i.test(url)) return "#";
   if (/^class(?:-\d+)?\.html$/i.test(url)) return "/how-to.html";
-  if (/^touhoku_tour\d{4}\.html$/i.test(url)) return `/activity.html?year=${activity.year}&section=tour`;
+  if (/^(?:machiaruki\d{4}|walk)\.html$/i.test(url)) return `/activity.html?year=${activity.year}&section=walk`;
+  if (/^(?:touhoku_tour\d{4}|tour)\.html$/i.test(url)) return `/activity.html?year=${activity.year}&section=tour`;
+  if (/^(?:\d{4}final|final)\.html$/i.test(url)) return `/activity.html?year=${activity.year}&section=final`;
   if (url.startsWith("/")) return url;
 
   const sourceDirectory = sourcePath.slice(0, sourcePath.lastIndexOf("/") + 1);
@@ -148,6 +150,20 @@ function prepareActivityHtml(source, activity, sourcePath) {
   const root = documentCopy.querySelector("#main") || documentCopy.body;
 
   root.querySelectorAll("script").forEach((element) => element.remove());
+
+  root.querySelectorAll('div[style*="width:500px"]').forEach((element) => {
+    element.removeAttribute("style");
+    element.classList.add("archive-media");
+  });
+
+  root.querySelectorAll("img").forEach((element) => {
+    element.setAttribute("loading", "lazy");
+    if (!element.hasAttribute("alt")) element.setAttribute("alt", "活動記録の画像");
+  });
+
+  root.querySelectorAll("iframe").forEach((element) => {
+    element.setAttribute("loading", "lazy");
+  });
 
   root.querySelectorAll("*").forEach((element) => {
     for (const attribute of [...element.attributes]) {
@@ -166,7 +182,9 @@ function prepareActivityHtml(source, activity, sourcePath) {
 function sectionLinks(activity, current) {
   const sections = [
     activity.source && ["index", "年度の活動"],
+    activity.walkSource && ["walk", "まちあるき"],
     activity.tourSource && ["tour", "東北復興視察"],
+    activity.finalSource && ["final", "最終発表"],
   ].filter(Boolean);
 
   return `<nav class="activity-tabs" aria-label="${activity.year}年度の活動資料">${sections.map(([section, label]) => {
@@ -187,7 +205,7 @@ async function renderActivityDetail() {
     window.location.replace("/how-to.html");
     return;
   }
-  if (!/^\d{4}$/.test(year) || !["index", "tour"].includes(section)) {
+  if (!/^\d{4}$/.test(year) || !["index", "walk", "tour", "final"].includes(section)) {
     mount.innerHTML = '<h1>活動記録</h1><p class="load-error">年度が指定されていません。</p>';
     return;
   }
@@ -196,8 +214,8 @@ async function renderActivityDetail() {
     const activity = (await activitiesPromise).find((item) => item.year === year);
     if (!activity) throw new Error("not found");
 
-    const labels = { index: "活動記録", tour: "東北復興視察" };
-    const sourceNames = { index: "source", tour: "tourSource" };
+    const labels = { index: "活動記録", walk: "まちあるき", tour: "東北復興視察", final: "最終発表" };
+    const sourceNames = { index: "source", walk: "walkSource", tour: "tourSource", final: "finalSource" };
     const archiveFilename = activity[sourceNames[section]];
     document.title = `${year}年度 ${labels[section]}｜防災地理部`;
 

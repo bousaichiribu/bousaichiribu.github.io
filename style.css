@@ -261,6 +261,12 @@ p { margin: 0 0 1.25em; }
 .archive-source a { text-decoration: underline; }
 .archive-source img { width: auto; max-width: 100%; height: auto; margin: 22px auto; object-fit: contain; }
 .archive-source iframe { display: block; width: 100%; max-width: 100%; min-height: 360px; margin: 26px 0; border: 0; }
+.archive-media { width: min(100%, 640px); margin: 26px auto; }
+.archive-source .archive-media iframe { margin: 0; }
+.media-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; margin: 26px 0 46px; }
+.media-card { min-width: 0; margin: 0; }
+.archive-source .media-grid iframe { min-height: 0; margin: 0; aspect-ratio: 16 / 9; background: #f2f2f2; }
+.media-card figcaption { margin-top: 10px; color: #444; font-size: 14px; line-height: 1.6; }
 .archive-source table { display: block; width: 100%; margin: 22px 0 38px; border-collapse: collapse; overflow-x: auto; }
 .archive-source th, .archive-source td { min-width: 120px; padding: 10px 12px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
 .archive-source th { min-width: 92px; background: #fafafa; }
@@ -291,6 +297,7 @@ p { margin: 0 0 1.25em; }
   .archive-source h2 { padding: 10px 12px 9px; font-size: 22px; }
   .archive-source h3 { font-size: 19px; }
   .archive-source iframe { min-height: 220px; }
+  .media-grid { grid-template-columns: 1fr; gap: 24px; }
   .site-footer { width: calc(100% - 40px); }
 }
 

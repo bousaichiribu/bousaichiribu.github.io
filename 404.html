@@ -15,7 +15,8 @@
   </main>
   <script>
     const path = window.location.pathname.replace(/\/+$/, "");
-    const activity = path.match(/\/activities\/(\d{4})(?:\/(class|tour))?$/);
+    const activity = path.match(/\/activities\/(\d{4})(?:\/(class|walk|tour|final))?$/);
+    const legacyArchive = path.match(/^\/content\/archive\/(?:(\d{4})index|(\d{4})final|machiaruki(\d{4})|touhoku_tour(\d{4}))\.html$/);
     if (activity) {
       if (activity[2] === "class") {
         window.location.replace("/how-to.html");
@@ -23,6 +24,12 @@
         const section = activity[2] ? `&section=${activity[2]}` : "";
         window.location.replace(`/activity.html?year=${activity[1]}${section}`);
       }
+    } else if (legacyArchive) {
+      const year = legacyArchive[1] || legacyArchive[2] || legacyArchive[3] || legacyArchive[4];
+      const section = legacyArchive[2] ? "&section=final"
+        : legacyArchive[3] ? "&section=walk"
+          : legacyArchive[4] ? "&section=tour" : "";
+      window.location.replace(`/activity.html?year=${year}${section}`);
     } else if (path === "/activities") {
       window.location.replace("/activities.html");
     } else if (path === "/how-to") {

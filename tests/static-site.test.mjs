@@ -4,6 +4,20 @@ import test from "node:test";
 
 const root = new URL("../", import.meta.url);
 
+async function listFiles(directory) {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const files = [];
+  for (const entry of entries) {
+    if (entry.isDirectory()) {
+      const children = await listFiles(new URL(`${entry.name}/`, directory));
+      files.push(...children.map((name) => `${entry.name}/${name}`));
+    } else {
+      files.push(entry.name);
+    }
+  }
+  return files;
+}
+
 test("home keeps the full philosophy and carousel", async () => {
   const home = await readFile(new URL("../index.html", import.meta.url), "utf8");
   assert.match(home, /class="intro-heading">活動理念/);
@@ -60,21 +74,28 @@ test("contact and related links are sections on the home page", async () => {
   await assert.rejects(access(new URL("../contact.html", import.meta.url)));
 });
 
-test("the activity list points to the complete 2020-2025 archives", async () => {
+test("the activity list points to year-based 2020-2025 archives", async () => {
   const activities = JSON.parse(await readFile(new URL("../content/activities.json", import.meta.url), "utf8"));
   assert.deepEqual(activities.map((activity) => activity.year), ["2025", "2024", "2023", "2022", "2021", "2020"]);
   for (const activity of activities) {
-    assert.match(activity.source, new RegExp(`^archive/${activity.year}index\\.html$`));
+    assert.match(activity.source, new RegExp(`^archive/${activity.year}/index\\.html$`));
     assert.equal(activity.classSource, undefined);
     await access(new URL(`../content/${activity.source}`, import.meta.url));
     await assert.rejects(access(new URL(`../content/activities/${activity.year}.md`, import.meta.url)));
   }
 
+  for (const year of ["2022", "2023", "2024", "2025"]) {
+    const activity = activities.find((item) => item.year === year);
+    assert.equal(activity.finalSource, `archive/${year}/final.html`);
+  }
+  assert.equal(activities.find((item) => item.year === "2024").walkSource, "archive/2024/walk.html");
+
   const template = await readFile(new URL("../content/activities/_template.html", import.meta.url), "utf8");
-  const activity2020 = await readFile(new URL("../content/archive/2020index.html", import.meta.url), "utf8");
+  const activity2020 = await readFile(new URL("../content/archive/2020/index.html", import.meta.url), "utf8");
   const howTo = await readFile(new URL("../how-to.html", import.meta.url), "utf8");
-  const tour2025 = await readFile(new URL("../content/archive/touhoku_tour2025.html", import.meta.url), "utf8");
+  const tour2025 = await readFile(new URL("../content/archive/2025/tour.html", import.meta.url), "utf8");
   assert.match(template, /<main id="main">/);
+  assert.match(template, /content\/archive\/2026\/index\.html/);
   assert.match(activity2020, /各校の提案プラン/);
   assert.match(howTo, /7\. プランを実践してみる/);
   assert.match(howTo, /石巻がれき処理/);
@@ -93,19 +114,21 @@ test("the activity list points to the complete 2020-2025 archives", async () => 
 
 test("archive fragments and their media are self-contained", async () => {
   const archiveDirectory = new URL("../content/archive/", import.meta.url);
-  const archiveFiles = (await readdir(archiveDirectory)).filter((name) => name.endsWith(".html"));
+  const archiveFiles = (await listFiles(archiveDirectory)).filter((name) => name.endsWith(".html"));
   const script = await readFile(new URL("../site.js", import.meta.url), "utf8");
 
   assert.doesNotMatch(script, /www\.bin\.t\.u-tokyo\.ac\.jp\/bousai_/);
   assert.match(script, /`\/content\/\$\{sourceDirectory\}\$\{relative\}`/);
+  assert.match(script, /walkSource/);
+  assert.match(script, /finalSource/);
 
   for (const filename of archiveFiles) {
     const source = await readFile(new URL(filename, archiveDirectory), "utf8");
     assert.match(source, /^<main id="main">/);
     assert.doesNotMatch(source, /<!DOCTYPE|<html|<head|<body|id="wrapper"|研究室TOP|\/seminar\.html|<input|onclick=/i);
 
-    for (const match of source.matchAll(/(?:src|href)=["']((?:img|files)\/[^"']+)["']/gi)) {
-      await access(new URL(match[1], archiveDirectory));
+    for (const match of source.matchAll(/(?:src|href)=["']((?:images|files)\/[^"']+)["']/gi)) {
+      await access(new URL(match[1], new URL(filename, archiveDirectory)));
     }
   }
 });
@@ -117,7 +140,10 @@ test("build output contains static pages and the small hosting entry", async () 
     "dist/client/how-to.html",
     "dist/client/content/activities.json",
     "dist/client/content/activities/_template.html",
-    "dist/client/content/archive/img/2023_1.png",
+    "dist/client/content/archive/2023/images/activity/2023_1.png",
+    "dist/client/content/archive/2024/walk.html",
+    "dist/client/content/archive/2024/images/walk/ozu.jpg",
+    "dist/client/content/archive/2025/final.html",
     "dist/client/content/archive/files/Layer_analysis.pdf",
     "dist/client/images/home/DSC_1633.webp",
     "dist/server/index.js",
