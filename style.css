@@ -329,6 +329,10 @@ p { margin: 0 0 1.25em; }
 .archive-source table { display: block; width: 100%; margin: 22px 0 38px; border-collapse: collapse; overflow-x: auto; }
 .archive-source th, .archive-source td { min-width: 120px; padding: 10px 12px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
 .archive-source th { min-width: 92px; background: #fafafa; }
+.archive-source table.t { margin: 16px 0 30px; font-size: 14px; line-height: 1.6; }
+.archive-source table.t th,
+.archive-source table.t td { min-width: 100px; padding: 7px 9px; }
+.archive-source table.t th { min-width: 84px; }
 .archive-source ol.indx { margin: 14px 0 38px; }
 .archive-source .restricted-note { display: inline-block; padding: 2px 8px; border: 1px solid var(--line); color: var(--muted); font-size: 12px; }
 
