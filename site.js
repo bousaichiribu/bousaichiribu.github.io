@@ -44,6 +44,8 @@ function renderHeader() {
         <nav class="site-nav" aria-label="メインナビゲーション">
           <ul>
             <li><a href="/">ホーム</a></li>
+            <li><a href="/organization.html">体制</a></li>
+            <li><a href="/how-to.html">活動の進め方</a></li>
             <li class="nav-activity-menu">
               <span class="nav-activity-label">
                 <a href="/activities.html">活動記録</a>
@@ -51,7 +53,6 @@ function renderHeader() {
               </span>
               <ul class="activity-year-menu" data-year-menu aria-label="年度別の活動記録"></ul>
             </li>
-            <li><a href="/how-to.html">活動の進め方</a></li>
             <li><a href="/#contact">お問い合わせ</a></li>
           </ul>
         </nav>
@@ -126,7 +127,9 @@ function renderLatestActivity() {
   if (!mount) return;
   activitiesPromise.then(([latest]) => {
     if (latest) {
-      mount.innerHTML = `<a class="text-link" href="/activity.html?year=${latest.year}">${latest.year}年度の活動記録 →</a>`;
+      const link = mount.closest("[data-latest-activity-card]");
+      if (link) link.href = `/activity.html?year=${latest.year}`;
+      mount.textContent = `${latest.year}年度の活動記録を見る →`;
     }
   });
 }

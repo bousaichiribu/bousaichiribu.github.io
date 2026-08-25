@@ -15,6 +15,7 @@ for (const filename of [
   "activities.html",
   "activity.html",
   "how-to.html",
+  "organization.html",
   "404.html",
   "style.css",
   "site.js",

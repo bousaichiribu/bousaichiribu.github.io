@@ -208,6 +208,35 @@ p { margin: 0 0 1.25em; }
 
 .home-section { margin: 0; padding: 0 0 52px; border-top: 1px solid var(--line); }
 .home-section h2 { margin-top: 44px; }
+.home-link-section { padding: 0; }
+.home-page-card {
+  display: grid;
+  grid-template-columns: 156px minmax(0, 1fr);
+  gap: 28px;
+  padding: 28px 0;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+.home-page-card-image {
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #eee;
+}
+.home-page-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .25s ease;
+}
+.home-page-card[href="/organization.html"] img { object-position: 68% center; }
+.home-page-card h2 { margin: 0 0 10px; }
+.home-page-card-action { text-decoration: underline; text-underline-offset: 4px; }
+.home-page-card:hover .home-page-card-image img,
+.home-page-card:focus-visible .home-page-card-image img { transform: scale(1.035); }
+.home-page-card:hover .home-page-card-action,
+.home-page-card:focus-visible .home-page-card-action { color: var(--muted); }
 #contact { scroll-margin-top: calc(var(--nav-height) + 22px); }
 .text-link { text-decoration: underline; }
 
@@ -216,6 +245,32 @@ p { margin: 0 0 1.25em; }
 .prose h2 { padding-top: 16px; border-top: 1px solid var(--line); }
 .prose ul { padding-left: 1.45em; }
 .prose li { margin-bottom: .8em; padding-left: .3em; }
+
+.organization-page [id] { scroll-margin-top: calc(var(--nav-height) + 22px); }
+.organization-roster,
+.school-year-list { margin: 24px 0 38px; }
+.organization-roster > div,
+.school-year-list > div {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 22px;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+.organization-roster > div:last-child,
+.school-year-list > div:last-child { border-bottom: 1px solid var(--line); }
+.organization-roster dt,
+.school-year-list dt { font-weight: 700; }
+.organization-roster dd,
+.school-year-list dd { margin: 0; }
+.organization-page > section { margin-bottom: 58px; }
+.organization-page > section > .note { color: var(--muted); font-size: 14px; }
+.organization-page .award-section h4 {
+  margin: 28px 0 12px;
+  padding-left: 12px;
+  border-left: 2px solid #aaa;
+  font-size: 17px;
+}
 
 .archive-list { border-top: 1px solid var(--line); }
 .archive-list article { padding: 22px 0; border-bottom: 1px solid var(--line); }
@@ -263,6 +318,10 @@ p { margin: 0 0 1.25em; }
 .archive-source iframe { display: block; width: 100%; max-width: 100%; min-height: 360px; margin: 26px 0; border: 0; }
 .archive-media { width: min(100%, 640px); margin: 26px auto; }
 .archive-source .archive-media iframe { margin: 0; }
+.award-box { margin: 22px 0 48px; padding: 4px 24px 20px; border: 1px solid var(--line); background: #fafafa; }
+.award-section + .award-section { margin-top: 28px; padding-top: 8px; border-top: 1px solid var(--line); }
+.award-section h5 { margin: 22px 0 10px; font-size: 16px; }
+.award-section .note { color: var(--muted); font-size: 14px; }
 .media-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; margin: 26px 0 46px; }
 .media-card { min-width: 0; margin: 0; }
 .archive-source .media-grid iframe { min-height: 0; margin: 0; aspect-ratio: 16 / 9; background: #f2f2f2; }
@@ -294,9 +353,14 @@ p { margin: 0 0 1.25em; }
   .main-content { width: calc(100% - 40px); margin-top: 60px; }
   h1 { margin-bottom: 34px; }
   .bio-text { font-size: 16px; }
+  .home-page-card { grid-template-columns: 108px minmax(0, 1fr); gap: 18px; padding: 22px 0; }
+  .home-page-card h2 { font-size: 21px; }
+  .organization-roster > div,
+  .school-year-list > div { grid-template-columns: 1fr; gap: 4px; padding: 15px 0; }
   .archive-source h2 { padding: 10px 12px 9px; font-size: 22px; }
   .archive-source h3 { font-size: 19px; }
   .archive-source iframe { min-height: 220px; }
+  .award-box { padding: 2px 16px 14px; }
   .media-grid { grid-template-columns: 1fr; gap: 24px; }
   .site-footer { width: calc(100% - 40px); }
 }
@@ -304,4 +368,5 @@ p { margin: 0 0 1.25em; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .activity-year-menu { transition: none; }
+  .home-page-card-image img { transition: none; }
 }
