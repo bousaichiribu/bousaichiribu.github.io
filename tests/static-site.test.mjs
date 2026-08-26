@@ -31,12 +31,18 @@ test("home keeps the full philosophy and carousel", async () => {
   assert.doesNotMatch(home, /images\/subimage\/[^"']+\.(?:jpe?g|png)/i);
 });
 
-test("plain JavaScript provides the JSON-backed year menu and nine WebP photos", async () => {
+test("plain JavaScript provides the JSON-backed year menu and eight existing WebP photos", async () => {
   const script = await readFile(new URL("../site.js", import.meta.url), "utf8");
   assert.match(script, /年度別の活動記録を開く/);
   assert.match(script, /carouselPhotos/);
-  assert.match(script, /DSC_1633\.webp/);
-  assert.match(script, /fishing-harbor\.webp/);
+  const carouselBlock = script.match(/const carouselPhotos = \[([\s\S]*?)\n\];/);
+  assert.ok(carouselBlock);
+  const carouselSources = [...carouselBlock[1].matchAll(/src: "(\/images\/home\/[^"']+\.webp)"/g)]
+    .map((match) => match[1]);
+  assert.equal(carouselSources.length, 8);
+  for (const source of carouselSources) {
+    await access(new URL(`..${source}`, import.meta.url));
+  }
   assert.match(script, /\/content\/activities\.json/);
   assert.match(script, /loadActivities/);
   assert.match(script, /data-latest-activity-card/);
@@ -214,7 +220,7 @@ test("build output contains static pages and the small hosting entry", async () 
     "dist/client/images/subimage/organization.webp",
     "dist/client/images/subimage/how-to.webp",
     "dist/client/images/subimage/activities.webp",
-    "dist/client/images/home/DSC_1633.webp",
+    "dist/client/images/home/ainan2.webp",
     "dist/server/index.js",
     "dist/.openai/hosting.json",
   ]) {

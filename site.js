@@ -1,13 +1,12 @@
 const carouselPhotos = [
   { src: "/images/home/ainan.webp", alt: "山を背景にした愛南町の道路と市街地" },
-  { src: "/images/home/DSC_1633.webp", alt: "山と市街地を見渡す高台からの風景" },
-  { src: "/images/home/DSC_2052.webp", alt: "川と田畑に沿って広がる住宅地" },
-  { src: "/images/home/DSC_2113.webp", alt: "商店街のアーケードを歩く学生たち" },
-  { src: "/images/home/DSC_6860.webp", alt: "山に囲まれた谷あいの市街地" },
-  { src: "/images/home/DSC_6974.webp", alt: "枝いっぱいに実ったみかん" },
-  { src: "/images/home/IMG_2505.webp", alt: "高台から見渡す海沿いのまち" },
-  { src: "/images/home/IMG_5364.webp", alt: "青空の下の歩道橋と交差点" },
-  { src: "/images/home/fishing-harbor.webp", alt: "山に囲まれた漁港" },
+  { src: "/images/home/ainan2.webp", alt: "高台から見渡す愛南町の市街地と海" },
+  { src: "/images/home/ainan3.webp", alt: "川と田畑に沿って広がる愛南町の住宅地" },
+  { src: "/images/home/ozu1.webp", alt: "山に囲まれた大洲市の市街地と川" },
+  { src: "/images/home/uwajima1.webp", alt: "宇和島市の商店街を歩く学生たち" },
+  { src: "/images/home/yamada.webp", alt: "山に囲まれた山田町の漁港" },
+  { src: "/images/home/yawatahama1.webp", alt: "段々畑の高台から見渡す八幡浜市街と港" },
+  { src: "/images/home/yawatahama2.webp", alt: "枝いっぱいに実ったみかん" },
 ];
 
 function escapeHtml(value) {
