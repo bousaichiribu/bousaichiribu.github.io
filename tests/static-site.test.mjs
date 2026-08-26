@@ -76,19 +76,22 @@ test("header stays visible and collapses into an accessible menu", async () => {
   assert.match(script, /event\.key !== "Escape"/);
 });
 
-test("archive headings have visible hierarchy and hash navigation", async () => {
+test("archive pages use the home content width, visible headings, and hash navigation", async () => {
   const [activityPage, style, script] = await Promise.all([
     readFile(new URL("../activity.html", import.meta.url), "utf8"),
     readFile(new URL("../style.css", import.meta.url), "utf8"),
     readFile(new URL("../site.js", import.meta.url), "utf8"),
   ]);
   assert.match(activityPage, /class="main-content activity-main"/);
-  assert.match(style, /\.activity-main \{ width: min\(1350px,/);
+  assert.match(style, /\.main-content \{[\s\S]*?width: min\(800px,/);
+  assert.doesNotMatch(style, /\.activity-main\s*\{[^}]*width:/);
   assert.match(style, /\.prose\.activity-detail \{ max-width: none; \}/);
   assert.match(style, /\.archive-source h2 \{/);
   assert.match(style, /border-left: 4px solid #444/);
   assert.match(style, /\.archive-source h3 \{/);
   assert.match(style, /border-bottom: 1px solid #ccc/);
+  assert.match(style, /\.archive-source img \{[^}]*max-height: 560px;/);
+  assert.doesNotMatch(style, /limited-height-images/);
   assert.match(style, /scroll-margin-top/);
   assert.match(script, /scrollIntoView/);
 });
@@ -194,6 +197,7 @@ test("archive fragments and their media are self-contained", async () => {
     const source = await readFile(new URL(filename, archiveDirectory), "utf8");
     assert.match(source, /^<main id="main">/);
     assert.doesNotMatch(source, /<!DOCTYPE|<html|<head|<body|id="wrapper"|研究室TOP|\/seminar\.html|<input|onclick=/i);
+    assert.doesNotMatch(source, /limited-height-images/);
     assert.doesNotMatch(source, /images\/activity|\.(?:png|jpe?g)["']/i);
 
     for (const match of source.matchAll(/(?:src|href)=["']((?:images|files)\/[^"']+)["']/gi)) {
