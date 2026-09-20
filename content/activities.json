@@ -2,7 +2,19 @@
   {
     "year": "2026",
     "schools": ["宇和島東高校", "宇和島南高校", "大洲高校", "大洲農業高校", "天竜高校", "南宇和高校", "八幡浜高校"],
-    "source": "archive/2026/index.html"
+    "source": "archive/2026/index.html",
+    "tourSources": [
+      {
+        "id": "tohoku",
+        "source": "archive/2026/tohoku_tour.html",
+        "label": "東北復興視察"
+      },
+      {
+        "id": "noto",
+        "source": "archive/2026/noto_tour.html",
+        "label": "能登復興視察"
+      }
+    ]
   },
   {
     "year": "2025",
