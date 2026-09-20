@@ -43,6 +43,15 @@ HTML、CSS、JavaScriptだけで表示する静的サイトです。React、Next
 "tourSource": "activities/touhoku_tour2026.html"
 ```
 
+同じ年度に視察ページを複数置く場合は、`tourSources` にそれぞれの識別子・表示名・HTMLを登録します。
+
+```json
+"tourSources": [
+  { "id": "tohoku", "label": "東北復興視察", "source": "archive/2026/tohoku_tour.html" },
+  { "id": "noto", "label": "能登復興視察", "source": "archive/2026/noto_tour.html" }
+]
+```
+
 年度一覧と上部メニューは`content/activities.json`から自動的に作られます。活動記録のURLは`activity.html?year=2026`です。「活動の進め方」は年度共通の独立ページとして`how-to.html`を編集します。
 
 ## ローカルで確認する

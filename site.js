@@ -163,17 +163,27 @@ function renderLatestActivity() {
   });
 }
 
+function getTourPages(activity) {
+  if (Array.isArray(activity.tourSources)) return activity.tourSources;
+  if (activity.tourSource) {
+    return [{ id: "tour", source: activity.tourSource, label: activity.tourLabel || "東北復興視察" }];
+  }
+  return [];
+}
+
 function resolveActivityUrl(url, activity, sourcePath) {
   if (/^(?:https?:|mailto:|tel:|#)/i.test(url)) return url;
   if (/^javascript:/i.test(url)) return "#";
   if (/^class(?:-\d+)?\.html$/i.test(url)) return "/how-to.html";
   if (/^(?:machiaruki\d{4}|walk)\.html$/i.test(url)) return `/activity.html?year=${activity.year}&section=walk`;
-  if (/^(?:touhoku_tour\d{4}|tour)\.html$/i.test(url)) return `/activity.html?year=${activity.year}&section=tour`;
   if (/^(?:\d{4}final|final)\.html$/i.test(url)) return `/activity.html?year=${activity.year}&section=final`;
   if (url.startsWith("/")) return url;
 
   const sourceDirectory = sourcePath.slice(0, sourcePath.lastIndexOf("/") + 1);
   const relative = url.replace(/^\.\//, "");
+  const tour = getTourPages(activity).find((page) => page.source === `${sourceDirectory}${relative}`);
+  if (tour) return `/activity.html?year=${activity.year}&section=tour&tour=${encodeURIComponent(tour.id)}`;
+  if (/^(?:noto_tour|touhoku_tour\d{4}|tour)\.html$/i.test(relative)) return `/activity.html?year=${activity.year}&section=tour`;
   return `/content/${sourceDirectory}${relative}`;
 }
 
@@ -211,17 +221,18 @@ function prepareActivityHtml(source, activity, sourcePath) {
   return root.innerHTML;
 }
 
-function sectionLinks(activity, current) {
+function sectionLinks(activity, current, currentTourId = "") {
   const sections = [
-    activity.source && ["index", "年度の活動"],
-    activity.walkSource && ["walk", "まちあるき"],
-    activity.tourSource && ["tour", "東北復興視察"],
-    activity.finalSource && ["final", "最終発表"],
+    activity.source && { section: "index", label: "年度の活動" },
+    activity.walkSource && { section: "walk", label: "まちあるき" },
+    ...getTourPages(activity).map((page) => ({ section: "tour", label: page.label, tourId: page.id })),
+    activity.finalSource && { section: "final", label: "最終発表" },
   ].filter(Boolean);
 
-  return `<nav class="activity-tabs" aria-label="${activity.year}年度の活動資料">${sections.map(([section, label]) => {
-    const query = section === "index" ? "" : `&section=${section}`;
-    const currentAttribute = current === section ? ' aria-current="page"' : "";
+  return `<nav class="activity-tabs" aria-label="${activity.year}年度の活動資料">${sections.map(({ section, label, tourId }) => {
+    const query = section === "index" ? "" : `&section=${section}${tourId ? `&tour=${encodeURIComponent(tourId)}` : ""}`;
+    const isCurrent = current === section && (!tourId || currentTourId === tourId);
+    const currentAttribute = isCurrent ? ' aria-current="page"' : "";
     return `<a${currentAttribute} href="/activity.html?year=${activity.year}${query}">${label}</a>`;
   }).join("")}</nav>`;
 }
@@ -233,6 +244,7 @@ async function renderActivityDetail() {
   const parameters = new URLSearchParams(window.location.search);
   const year = parameters.get("year") || "";
   const section = parameters.get("section") || "index";
+  const tourId = parameters.get("tour") || "";
   if (section === "class") {
     window.location.replace("/how-to.html");
     return;
@@ -246,9 +258,15 @@ async function renderActivityDetail() {
     const activity = (await activitiesPromise).find((item) => item.year === year);
     if (!activity) throw new Error("not found");
 
-    const labels = { index: "活動記録", walk: "まちあるき", tour: "東北復興視察", final: "最終発表" };
+    const tourPages = getTourPages(activity);
+    const tour = section === "tour"
+      ? tourPages.find((page) => page.id === tourId) || (tourPages.length === 1 ? tourPages[0] : null)
+      : null;
+    if (section === "tour" && !tour) throw new Error("activity source not found");
+
+    const labels = { index: "活動記録", walk: "まちあるき", tour: tour?.label, final: "最終発表" };
     const sourceNames = { index: "source", walk: "walkSource", tour: "tourSource", final: "finalSource" };
-    const archiveFilename = activity[sourceNames[section]];
+    const archiveFilename = section === "tour" ? tour.source : activity[sourceNames[section]];
     document.title = `${year}年度 ${labels[section]}｜防災地理部`;
 
     const heading = section === "index"
@@ -267,7 +285,7 @@ async function renderActivityDetail() {
       ? '<a class="text-link" href="/activities.html">年度ごとの活動記録へ戻る →</a>'
       : `<a class="text-link" href="/activity.html?year=${year}">${year}年度の活動へ戻る →</a>`;
 
-    mount.innerHTML = `${heading}${schools}${sectionLinks(activity, section)}${content}<p>${backLink}</p>`;
+    mount.innerHTML = `${heading}${schools}${sectionLinks(activity, section, tour?.id)}${content}<p>${backLink}</p>`;
 
     if (window.location.hash) {
       const target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
