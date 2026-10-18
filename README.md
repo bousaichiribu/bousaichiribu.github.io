@@ -8,6 +8,7 @@ HTML、CSS、JavaScriptだけで表示する静的サイトです。React、Next
 - `activities.html` — 年度別活動記録の一覧
 - `activity.html` — 各年度の活動記録
 - `how-to.html` — 共通の「活動の進め方」と参考資料
+- `outputs.html` — 論文・学会等での発表と受賞
 - `style.css` — 全ページ共通の見た目
 - `site.js` — 写真切替、年度メニュー、活動記録の読み込み
 - `content/archive/` — 2020〜2025年度の本文、画像、PDF（通常は編集しません）

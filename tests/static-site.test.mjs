@@ -48,11 +48,13 @@ test("plain JavaScript provides the JSON-backed year menu and eight existing Web
   assert.match(script, /data-latest-activity-card/);
   assert.match(script, /href="\/how-to\.html">活動の進め方/);
   assert.match(script, /href="\/organization\.html">体制/);
+  assert.match(script, /href="\/outputs\.html">発表・受賞/);
   const navigationLabels = [
     'href="/">ホーム',
     'href="/organization.html">体制',
     'href="/how-to.html">活動の進め方',
     'href="/activities.html">活動記録',
+    'href="/outputs.html">発表・受賞',
     'href="/#contact">お問い合わせ',
   ];
   const navigationPositions = navigationLabels.map((label) => script.indexOf(label));
@@ -137,6 +139,25 @@ test("organization page lists the team, participating schools, and award rules",
   assert.match(notFound, /path === "\/organization"/);
 });
 
+test("outputs page lists presentations and awards and is reachable from the header", async () => {
+  const [outputs, script, notFound] = await Promise.all([
+    readFile(new URL("../outputs.html", import.meta.url), "utf8"),
+    readFile(new URL("../site.js", import.meta.url), "utf8"),
+    readFile(new URL("../404.html", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(outputs, /<h1>発表・受賞<\/h1>/);
+  assert.match(outputs, /論文および学会・シンポジウム等での発表/);
+  assert.match(outputs, /高校生防災地理部との東北・能登被災地スタディーツアー/);
+  assert.match(outputs, /肱川流域をつなぐ防災まちづくりの取組/);
+  assert.match(outputs, /高校生による「事前復興」の実践と地域防災への展開/);
+  assert.match(outputs, /宇和海沿岸地域「防災地理部」の取り組み/);
+  assert.match(outputs, /南宇和高校「組織活性化賞」/);
+  assert.match(outputs, /https:\/\/city\.pier\.news\/article\/327434#gsc\.tab=0/);
+  assert.match(script, /href="\/outputs\.html">発表・受賞/);
+  assert.match(notFound, /path === "\/outputs"/);
+});
+
 test("the activity list points to year-based 2020-2026 archives", async () => {
   const activities = JSON.parse(await readFile(new URL("../content/activities.json", import.meta.url), "utf8"));
   assert.deepEqual(activities.map((activity) => activity.year), ["2026", "2025", "2024", "2023", "2022", "2021", "2020"]);
@@ -212,6 +233,7 @@ test("build output contains static pages and the small hosting entry", async () 
     "dist/client/activity.html",
     "dist/client/how-to.html",
     "dist/client/organization.html",
+    "dist/client/outputs.html",
     "dist/client/content/activities.json",
     "dist/client/content/activities/_template.html",
     "dist/client/content/archive/2023/images/main/2023_1.webp",
