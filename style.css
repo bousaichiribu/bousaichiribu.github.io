@@ -280,6 +280,16 @@ p { margin: 0 0 1.25em; }
 .archive-list article { padding: 22px 0; border-bottom: 1px solid var(--line); }
 .archive-list a { font-family: "Hiragino Mincho ProN", "Yu Mincho", serif; font-size: 20px; font-weight: 600; text-decoration: none; }
 
+.outputs-page > section { margin-bottom: 58px; }
+.output-list { margin: 24px 0 0; padding: 0; border-top: 1px solid var(--line); list-style: none; }
+.prose .output-list > li { margin: 0; padding: 24px 0; border-bottom: 1px solid var(--line); }
+.output-list h3 { margin: 0 0 10px; font-size: 19px; }
+.output-list p { margin-bottom: 8px; }
+.output-list p:last-child { margin-bottom: 0; }
+.output-authors { color: #333; }
+.output-meta { color: var(--muted); font-size: 14px; }
+.output-note { display: inline-block; margin-left: 4px; padding: 1px 7px; border: 1px solid var(--line); font-size: 12px; line-height: 1.6; }
+
 .activity-schools { padding: 20px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .activity-tabs { display: flex; flex-wrap: wrap; gap: 0; margin: 42px 0 54px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .activity-tabs a { padding: 11px 20px 10px 0; color: var(--muted); }
